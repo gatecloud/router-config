@@ -9,12 +9,14 @@ import (
 type Templator interface {
 	Save() error
 	Load() (Templator, error)
+	Parse(args ...string) error
 }
 
 type CustomConfig map[string]interface{}
 
 type RouterTemplate struct {
 	Resources     []string
+	Methods       []string
 	Version       string
 	ProxySchema   string
 	ProxyPass     string
@@ -41,17 +43,26 @@ func (r *RouterTemplate) Load() (Templator, error) {
 	return nil, nil
 }
 
-func (r *RouterTemplate) Parse(resources, version, proxySchema, proxyPass, proxyVersion, customConfig string) error {
-	resources = strings.Replace(resources, "\r\n", "", -1)
-	resources = strings.Replace(resources, "\"", "", -1)
-	resources = strings.Replace(resources, "\t", "", -1)
-	resources = strings.Replace(resources, "\n", "", -1)
-	resources = strings.Replace(resources, "\r", "", -1)
-	resources = strings.Replace(resources, " ", "", -1)
-	r.Resources = strings.Split(resources[:len(resources)-1], ",")
+func (r *RouterTemplate) Parse(resources, methods, version, proxySchema, proxyPass, proxyVersion, customConfig string) error {
+	resources = filterString(resources)
+	r.Resources = strings.Split(resources, " ")
+	methods = filterString(methods)
+	methods = strings.ToUpper(methods)
+	r.Methods = strings.Split(methods, " ")
 	r.Version = version
 	r.ProxySchema = proxySchema
 	r.ProxyPass = proxyPass
 	r.ProxyVersion = proxyVersion
 	return json.Unmarshal([]byte(customConfig), &r.CustomConfigs)
+}
+
+func filterString(src string) string {
+	dst := strings.Replace(src, "\r\n", "", -1)
+	dst = strings.Replace(dst, "\"", "", -1)
+	dst = strings.Replace(dst, "\t", "", -1)
+	dst = strings.Replace(dst, "\n", "", -1)
+	dst = strings.Replace(dst, "\r", "", -1)
+	dst = strings.Replace(dst, " ", "", -1)
+	dst = strings.Replace(dst, ",", " ", -1)
+	return dst
 }

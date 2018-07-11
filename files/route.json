@@ -1,0 +1,314 @@
+[
+	{
+		"Method": "GET",
+		"Path": "/token",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8060",
+		"ProxyPassPath": "/token",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "POST",
+		"Path": "/token",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8060",
+		"ProxyPassPath": "/token",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "GET",
+		"Path": "/jwt",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8060",
+		"ProxyPassPath": "/jwt",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "POST",
+		"Path": "/jwt",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8060",
+		"ProxyPassPath": "/jwt",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "GET",
+		"Path": "/v1/AnalysisOutputs",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/AnalysisOutputs",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "GET",
+		"Path": "/v1/AnalysisOutputs/:id",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/AnalysisOutputs",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "POST",
+		"Path": "/v1/AnalysisOutputs",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/AnalysisOutputs",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "PATCH",
+		"Path": "/v1/AnalysisOutputs",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/AnalysisOutputs",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "DELETE",
+		"Path": "/v1/AnalysisOutputs",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/AnalysisOutputs",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "GET",
+		"Path": "/v1/ExtraCurriculums",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/ExtraCurriculums",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "GET",
+		"Path": "/v1/ExtraCurriculums/:id",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/ExtraCurriculums",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "POST",
+		"Path": "/v1/ExtraCurriculums",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/ExtraCurriculums",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "PATCH",
+		"Path": "/v1/ExtraCurriculums",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/ExtraCurriculums",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "DELETE",
+		"Path": "/v1/ExtraCurriculums",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/ExtraCurriculums",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "GET",
+		"Path": "/v0/AnalysisOutputs",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/AnalysisOutputs",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "GET",
+		"Path": "/v0/AnalysisOutputs/:id",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/AnalysisOutputs",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "POST",
+		"Path": "/v0/AnalysisOutputs",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/AnalysisOutputs",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "PATCH",
+		"Path": "/v0/AnalysisOutputs",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/AnalysisOutputs",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "DELETE",
+		"Path": "/v0/AnalysisOutputs",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/AnalysisOutputs",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "GET",
+		"Path": "/v0/ExtraCurriculums",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/ExtraCurriculums",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "GET",
+		"Path": "/v0/ExtraCurriculums/:id",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/ExtraCurriculums",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "POST",
+		"Path": "/v0/ExtraCurriculums",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/ExtraCurriculums",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "PATCH",
+		"Path": "/v0/ExtraCurriculums",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/ExtraCurriculums",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	},
+	{
+		"Method": "DELETE",
+		"Path": "/v0/ExtraCurriculums",
+		"ProxyScheme": "http",
+		"ProxyPass": "127.0.0.1:8021",
+		"ProxyPassPath": "/ExtraCurriculums",
+		"APIVersion": "v1",
+		"CustomConfigs": {
+			"Authentication": false,
+			"Cached": true,
+			"CachedDurationsInSecond": 10
+		}
+	}
+]
