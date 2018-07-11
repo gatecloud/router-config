@@ -1,0 +1,1 @@
+{"Resources":["Analysis","\t\tAnalysisOutputs"],"Version":"v1","ProxySchema":"http","ProxyPass":"127.0.0.1:8021","ProxyVersion":"v1","CustomConfigs":{"Authentication":false,"Cached":true,"CachedDurationsInSecond":10}}

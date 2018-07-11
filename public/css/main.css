@@ -1,0 +1,102 @@
+body{
+    padding-top: 30px;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    /* border: 1px solid #FF0000; */
+    padding-bottom: 500px;
+}
+
+aside{
+    width: 20%;
+    float: left;
+    border: 1px solid #00FF00;
+}
+
+.form-control{
+    float:right;
+    width: 400px;
+}
+
+.btn-area{
+    text-align: right;
+}
+
+.button-group {
+    text-align: right;
+}
+
+div.container{
+    margin-top: 20px;
+    /* border: 1px solid #000; */
+    border-radius: 10px;
+    padding: 20px 15px;
+   margin-bottom: 500px; 
+}
+
+.button-group input:hover{
+    cursor: pointer;
+}
+
+/* OAuth登录提交按钮 */
+div.OauthSignIn{
+    text-align: center;
+}
+
+div.SignInWithAuth0{
+    text-align: center;
+}
+
+.OauthSignIn div{
+    margin-top: 10px;
+    text-align: center;
+}
+.OauthSignIn a{
+    width:200px;
+}
+ 
+.OauthSignIn a:hover{
+    cursor: pointer;
+}
+
+#SignInWithAuth0 a{
+    padding:9px;
+    border: 1px solid rgb(185, 188, 190);
+    border-radius: 2px;
+    text-decoration: none;
+    color: #E16531;
+}
+
+input{
+    text-align: right;
+    margin-right: 10px;
+}
+
+div.group {
+    border: 1px solid blue;
+    
+}
+
+td{
+   width: 300px; 
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px; /* 5px rounded corners */
+    background-color: khaki;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card_container {
+    padding: 2px 16px;
+}
+
+.key{
+    color: darkred;
+    font-size: 15px;
+}

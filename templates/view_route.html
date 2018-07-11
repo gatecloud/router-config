@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/public/css/bootstrap.css" rel="stylesheet" />
+    <link href="/public/css/main.css" rel="stylesheet" />
+    <script type="text/javascript" src="/public/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap.js"></script>
+    <title>Go dynamic JSON</title>
+
+    <script type="text/javascript">
+        $(function(){
+            $.get("http://localhost:7000/GetTemplate", function(data, status){
+                $("#template").append(data)
+                // $("#template").addClass("card")
+            })
+
+            $("#export").click(function(){
+                var names = []
+                $("span[name='pattern_name']").each(function(){
+                    var name = $(this).text()
+                    if (name != "") {
+                        names.push(name)
+                    }
+                })
+
+                var values = []
+                $("textarea[name='pattern_value']").each(function(){
+                    var value = $(this).val()
+                    if (value != "") {
+                        values.push(value)
+                    }
+                })
+
+                var keyPairs = []
+                for (var i=0; i<names.length; i++){
+                        var keyPair = names[i]+":"+values[i]
+                        keyPairs.push(keyPair)
+                }
+                var keys = keyPairs.join(";")
+                $.post("http://localhost:7000/SetPattern", 
+                {content:keys},
+                function(result){
+                })
+            })
+         
+        })
+    </script>
+</head>
+
+<body>
+    <div class="container col-lg-8 col-lg-push-2">
+        <form action="/SetRoute" method="POST">
+            <div class="col-sm-4 col-sm-push-8 float-left">
+                    <h3>
+                        Template                    
+                    </h3>
+                    <div id="template" class="card">
+                    </div>
+                </div>
+            <div class="col-sm-6 float-right">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Field Name</th>
+                            <th scope="col">Field Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr scope="row">
+                            <th> 1</th>
+                            <td>
+                                Resource
+                            </td>
+                            <td>
+                               <textarea name="resource" width="200px" text="" height="400px"></textarea> 
+                            </td>
+                        <tr scope="row">
+                            <th> 2</th>
+                            <td>
+                               Version 
+                            </td>
+                            <td>
+                                <input type="text" name="version" text="" />
+                            </td>
+                        </tr>
+                        <tr scope="row">
+                            <th> 3</th>
+                            <td>
+                                Proxy Schema 
+                            </td>
+                            <td>
+                                <input type="text" name="proxy_schema" text="" />
+                            </td>
+                        <tr scope="row">
+                            <th> 4</th>
+                            <td>
+                                Proxy Pass
+                            </td>
+                            <td>
+                                <input type="text" name="proxy_pass" text="" />
+                            </td>
+                        <tr scope="row">
+                            <th> 5</th>
+                            <td>
+                                Proxy Version
+                            </td>
+                            <td>
+                                <input type="text" name="proxy_version" text="" />
+                            </td>
+                        <tr scope="row">
+                            <th> 6</th>
+                            <td>
+                                Custom Configuration
+                            </td>
+                            <td>
+                               <textarea name="custom_config" width="200px"></textarea> 
+                            </td>
+                    </tbody>
+                </table>
+            <input id="export" type="submit" class="btn btn-primary" value="Export JSON" />
+            </div>
+           
+        </form>
+    </div>
+</body>
+
+</html>
+
