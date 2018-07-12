@@ -18,10 +18,9 @@ func main() {
 	r.GET("/index", func(ctx *gin.Context) {
 		groups, err := logic.ToList()
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, err.Error())
+			RedirectError(ctx, http.StatusInternalServerError, err)
 			return
 		}
-
 		ctx.HTML(http.StatusOK, "index.html", gin.H{
 			"Groups": groups,
 		})
@@ -37,15 +36,36 @@ func main() {
 		proxyVersion := ctx.PostForm("proxy_version")
 		customConfig := ctx.PostForm("custom_config")
 		if err := r.Parse(resources, methods, version, proxySchema, proxyPass, proxyVersion, customConfig); err != nil {
-			ctx.JSON(http.StatusInternalServerError, err.Error())
+			RedirectError(ctx, http.StatusInternalServerError, err)
 			return
 		}
 		if err := r.Save(ctx.PostForm("filename")); err != nil {
-			ctx.JSON(http.StatusInternalServerError, err.Error())
+			RedirectError(ctx, http.StatusInternalServerError, err)
+			return
+		}
+		ctx.Redirect(http.StatusMovedPermanently, "/index")
+	})
+
+	r.GET("/GetTemplate/:filename", func(ctx *gin.Context) {
+		filename := strings.TrimSpace(ctx.Param("filename"))
+		routerTemplate, err := logic.Load(filename)
+		if err != nil {
+			RedirectError(ctx, http.StatusInternalServerError, err)
 			return
 		}
 
-		ctx.Redirect(http.StatusMovedPermanently, "/index")
+		// ctx.JSON(http.StatusOK, gin.H{
+		// 	"RouterTemplate": routerTemplate,
+		// })
+		ctx.JSON(http.StatusOK, gin.H{
+			"resources":     routerTemplate.Resources,
+			"methods":       routerTemplate.Methods,
+			"version":       routerTemplate.Version,
+			"proxyschema":   routerTemplate.ProxySchema,
+			"proxypass":     routerTemplate.ProxyPass,
+			"proxyversion":  routerTemplate.ProxyVersion,
+			"customconfigs": routerTemplate.CustomConfigs,
+		})
 	})
 
 	r.POST("/Export", func(ctx *gin.Context) {
@@ -53,12 +73,17 @@ func main() {
 		fileList := strings.Split(fileContent, ";")
 		filename := ctx.PostForm("filename")
 		if err := logic.Export(filename, fileList); err != nil {
-			ctx.String(http.StatusInternalServerError, "%s", err.Error())
+			RedirectError(ctx, http.StatusInternalServerError, err)
 			return
 		}
-
 		ctx.Redirect(http.StatusMovedPermanently, "/index")
 	})
 
 	r.Run(":7000")
+}
+
+func RedirectError(ctx *gin.Context, statusCode int, err error) {
+	ctx.HTML(statusCode, "error.html", gin.H{
+		"Error": err.Error(),
+	})
 }

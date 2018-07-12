@@ -35,6 +35,35 @@ func ToList() ([]FileGroup, error) {
 	return groups, nil
 }
 
+func Load(filename string) (RouterTemplate, error) {
+	if filename == "" {
+		return RouterTemplate{}, errors.New("filename can not be empty")
+	}
+	var routerTemplate RouterTemplate
+	if err := filepath.Walk("groups/", func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			_, fname := filepath.Split(path)
+			if fname == filename {
+				body, err := ioutil.ReadFile(path)
+				if err != nil {
+					return err
+				}
+
+				err = json.Unmarshal(body, &routerTemplate)
+				if err != nil {
+					return err
+				}
+
+				return nil
+			}
+		}
+		return nil
+	}); err != nil {
+		return RouterTemplate{}, nil
+	}
+	return routerTemplate, nil
+}
+
 func Export(filename string, fileList []string) error {
 	if filename == "" {
 		return errors.New("filename can not be empty")
