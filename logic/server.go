@@ -1,5 +1,6 @@
 package logic
 
+// Server is server configuration structure
 type Server struct {
 	Method        string
 	Path          string

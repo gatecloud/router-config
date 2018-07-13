@@ -13,16 +13,25 @@ func main() {
 	r.HandleMethodNotAllowed = true
 	r.StaticFS("/public", http.Dir("public"))
 	r.StaticFS("/groups", http.Dir("groups"))
+	r.StaticFS("/files", http.Dir("files"))
 	r.LoadHTMLGlob("templates/*")
 
 	r.GET("/index", func(ctx *gin.Context) {
-		groups, err := logic.ToList()
+		groups, err := logic.ToList("groups/")
 		if err != nil {
 			RedirectError(ctx, http.StatusInternalServerError, err)
 			return
 		}
+
+		files, err := logic.ToList("files/")
+		if err != nil {
+			RedirectError(ctx, http.StatusInternalServerError, err)
+			return
+		}
+
 		ctx.HTML(http.StatusOK, "index.html", gin.H{
 			"Groups": groups,
+			"Files":  files,
 		})
 	})
 
@@ -47,16 +56,14 @@ func main() {
 	})
 
 	r.GET("/GetTemplate/:filename", func(ctx *gin.Context) {
+		routerTemplate := logic.RouterTemplate{}
 		filename := strings.TrimSpace(ctx.Param("filename"))
-		routerTemplate, err := logic.Load(filename)
+		err := routerTemplate.Load(filename)
 		if err != nil {
 			RedirectError(ctx, http.StatusInternalServerError, err)
 			return
 		}
 
-		// ctx.JSON(http.StatusOK, gin.H{
-		// 	"RouterTemplate": routerTemplate,
-		// })
 		ctx.JSON(http.StatusOK, gin.H{
 			"resources":     routerTemplate.Resources,
 			"methods":       routerTemplate.Methods,
@@ -82,6 +89,7 @@ func main() {
 	r.Run(":7000")
 }
 
+// RedirectError redirects to the error page
 func RedirectError(ctx *gin.Context, statusCode int, err error) {
 	ctx.HTML(statusCode, "error.html", gin.H{
 		"Error": err.Error(),

@@ -12,8 +12,10 @@
 
     <script type="text/javascript">
         $(function(){
-            // $.get("http://localhost:7000/GetTemplate", function(data, status){
-            //     $("#example").append(data)
+            // $.get("http://localhost:7000/GetFiles", function(data, status){
+            //     alert(data)
+            //     // $("#file-group").append(data)
+
             //     // $("#template").addClass("card")
             // })
 
@@ -63,10 +65,17 @@
 <body>
     <div class="container col-lg-8 col-lg-push-2">
             <div class="col-sm-4 col-sm-push-8 float-left">
-                <h3>
-                    Example
+                <div id="file" class="card" >
+                 <h3>
+                    Download Files
                 </h3>
-                <div id="example" class="card">
+                <div class="list-group">
+                        {{ range $i, $v := .Files }}
+                        <div class="file-group list-group-item list-group-item-action">
+                            <a href= {{ $v.URL }}> {{ $v.FileName }} </a>
+                        </div>
+                        {{ end }}
+                </div>
                 </div>
                     <div class="list-group">
                         <h3>Template List</h3>
@@ -76,7 +85,7 @@
                         {{ range $i, $v := .Groups }}
                         <div class="template-group list-group-item list-group-item-action">
                             <input type="checkbox" aria-label="Checkbox for following text input">
-                            <a href={ { $v.URL }}> {{ $v.FileName }} </a>
+                            <a href="#"> {{ $v.FileName }} </a>
                         </div>
                         <!-- <a href= {{ $v.URL }} class="list-group-item list-group-item-action"> {{ $v.FileName }} </a> -->
                         {{ end }}

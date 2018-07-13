@@ -10,60 +10,33 @@ import (
 	"strings"
 )
 
-type FileGroup struct {
+// FileInfo is the file basic information
+type FileInfo struct {
 	URL      string
 	FileName string
 }
 
-func ToList() ([]FileGroup, error) {
-	var groups []FileGroup
-	if err := filepath.Walk("groups/", func(path string, info os.FileInfo, err error) error {
+// ToList lists all files in the path
+func ToList(pathName string) ([]FileInfo, error) {
+	var files []FileInfo
+	if err := filepath.Walk(pathName+"/", func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
 			_, filename := filepath.Split(path)
-			group := FileGroup{
-				URL:      path,
+			file := FileInfo{
+				URL:      strings.Replace(path, "\\", "/", -1),
 				FileName: filename,
 			}
-			groups = append(groups, group)
+			files = append(files, file)
 		}
-
 		return nil
 	}); err != nil {
 		return nil, nil
 	}
 
-	return groups, nil
+	return files, nil
 }
 
-func Load(filename string) (RouterTemplate, error) {
-	if filename == "" {
-		return RouterTemplate{}, errors.New("filename can not be empty")
-	}
-	var routerTemplate RouterTemplate
-	if err := filepath.Walk("groups/", func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
-			_, fname := filepath.Split(path)
-			if fname == filename {
-				body, err := ioutil.ReadFile(path)
-				if err != nil {
-					return err
-				}
-
-				err = json.Unmarshal(body, &routerTemplate)
-				if err != nil {
-					return err
-				}
-
-				return nil
-			}
-		}
-		return nil
-	}); err != nil {
-		return RouterTemplate{}, nil
-	}
-	return routerTemplate, nil
-}
-
+// Export exports server configuration file
 func Export(filename string, fileList []string) error {
 	if filename == "" {
 		return errors.New("filename can not be empty")
@@ -103,17 +76,6 @@ func Export(filename string, fileList []string) error {
 					path = "/" + template.Version + "/" + resource
 				} else {
 					path = "/" + resource
-				}
-
-				if method == "GETBYID" {
-					method = "GET"
-					path += "/:id"
-				} else if method == "PATCHBYID" {
-					method = "PATCH"
-					path += "/:id"
-				} else if method == "DELETEBYID" {
-					method = "DELETE"
-					path += "/:id"
 				}
 
 				server := Server{

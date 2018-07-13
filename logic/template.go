@@ -2,13 +2,16 @@ package logic
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
 type Templator interface {
 	Save() error
-	Load() (Templator, error)
+	Load(filename string) error
 	Parse(args ...string) error
 }
 
@@ -30,17 +33,7 @@ func (r *RouterTemplate) Save(fileName string) error {
 		return err
 	}
 
-	// name := reflect.TypeOf(*r).Name()
-	// if name == "" {
-	// 	return errors.New("fail to reflect router template name")
-	// }
 	return ioutil.WriteFile("groups/"+fileName+".json", body, 0600)
-
-}
-
-func (r *RouterTemplate) Load() (Templator, error) {
-
-	return nil, nil
 }
 
 func (r *RouterTemplate) Parse(resources, methods, version, proxySchema, proxyPass, proxyVersion, customConfig string) error {
@@ -65,4 +58,33 @@ func filterString(src string) string {
 	dst = strings.Replace(dst, " ", "", -1)
 	dst = strings.Replace(dst, ",", " ", -1)
 	return dst
+}
+
+func (r *RouterTemplate) Load(filename string) error {
+	if filename == "" {
+		return errors.New("filename can not be empty")
+	}
+
+	if err := filepath.Walk("groups/", func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			_, fname := filepath.Split(path)
+			if fname == filename {
+				body, err := ioutil.ReadFile(path)
+				if err != nil {
+					return err
+				}
+
+				err = json.Unmarshal(body, r)
+				if err != nil {
+					return err
+				}
+
+				return nil
+			}
+		}
+		return nil
+	}); err != nil {
+		return nil
+	}
+	return nil
 }
