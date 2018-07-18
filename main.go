@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"router-config/logic"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,13 +19,13 @@ func main() {
 	r.LoadHTMLGlob("templates/*")
 
 	r.GET("/index", func(ctx *gin.Context) {
-		groups, err := logic.ToList("groups/")
+		files, err := logic.ToList("files/")
 		if err != nil {
 			RedirectError(ctx, http.StatusInternalServerError, err)
 			return
 		}
 
-		files, err := logic.ToList("files/")
+		groups, err := logic.ToList("groups/")
 		if err != nil {
 			RedirectError(ctx, http.StatusInternalServerError, err)
 			return
@@ -64,6 +66,12 @@ func main() {
 			return
 		}
 
+		customConfigs, err := json.MarshalIndent(routerTemplate.CustomConfigs, "", "\t")
+		if err != nil {
+			RedirectError(ctx, http.StatusInternalServerError, err)
+			return
+		}
+
 		ctx.JSON(http.StatusOK, gin.H{
 			"resources":     routerTemplate.Resources,
 			"methods":       routerTemplate.Methods,
@@ -71,7 +79,7 @@ func main() {
 			"proxyschema":   routerTemplate.ProxySchema,
 			"proxypass":     routerTemplate.ProxyPass,
 			"proxyversion":  routerTemplate.ProxyVersion,
-			"customconfigs": routerTemplate.CustomConfigs,
+			"customconfigs": string(customConfigs),
 		})
 	})
 
@@ -83,6 +91,17 @@ func main() {
 			RedirectError(ctx, http.StatusInternalServerError, err)
 			return
 		}
+		ctx.Redirect(http.StatusMovedPermanently, "/index")
+	})
+
+	r.POST("/DeleteGroup", func(ctx *gin.Context) {
+		fileContent := ctx.PostForm("content")
+		fileList := strings.Split(fileContent, ";")
+		if err := logic.DeleteGroup(fileList); err != nil {
+			RedirectError(ctx, http.StatusInternalServerError, err)
+			return
+		}
+		time.Sleep(1 * time.Second)
 		ctx.Redirect(http.StatusMovedPermanently, "/index")
 	})
 

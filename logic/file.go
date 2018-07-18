@@ -144,3 +144,23 @@ func createJSONFile(filename string, servers []Server) error {
 
 	return nil
 }
+
+// DeleteGroup deletes server configuration file
+func DeleteGroup(fileList []string) error {
+	if err := filepath.Walk("groups/", func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			_, fname := filepath.Split(path)
+			for _, v := range fileList {
+				if strings.TrimSpace(v) == fname {
+					if err := os.Remove(path); err != nil {
+						return err
+					}
+				}
+			}
+		}
+		return nil
+	}); err != nil {
+		return nil
+	}
+	return nil
+}

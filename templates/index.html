@@ -19,6 +19,7 @@
             //     // $("#template").addClass("card")
             // })
 
+
             $(".template-group").on("click",function(){
                 $checkbox = $(this).children("input")
                 if ($checkbox.attr("checked") == "checked"){
@@ -58,6 +59,26 @@
 
                 })
             })
+            
+            $("#delete").click(function(){
+                var filenames = []
+                $(".template-group").children("a").each(function(){
+                    $checkbox = $(this).siblings("input")
+                    if ($checkbox.attr("checked") == "checked"){
+                        var name = $(this).text()
+                        filenames.push(name)
+                    }
+                })
+
+                var exportedFileName = $("#exported-file-name").val()
+                var exportList = filenames.join(";")
+                $.post("http://localhost:7000/DeleteGroup",
+                {content:exportList},
+                function(result){
+                    location.reload(true)
+                })
+            })
+            
         })
     </script>
 </head>
@@ -92,6 +113,7 @@
                     </div>
                     Exported File Name:  <input type="text" id="exported-file-name" />
                     <input id="export" type="button" class="btn btn-primary" value="Export JSON" />
+                    <input id="delete" type="button" class="btn btn-primary" value="Delete" />
             </div>
             <form action="/AddTemplate" method="POST">
                 <div class="col-sm-6 float-right">
