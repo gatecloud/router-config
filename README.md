@@ -4,14 +4,8 @@ A tool for routing file configuration
 
 ## Usage
 
-Open `cmd`
 
-```
-$ go get "github.com/gatecloud/router-config"
-$ cd go/src/github.com/gatecloud/router-config
-$ go run main.go
-```
+Make sure that you have Chrome in your computer before running the `router-config.bat` file 
 
-Open the browser and type `localhost:7000/index`
 
 
