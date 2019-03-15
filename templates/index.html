@@ -87,13 +87,13 @@
     </script> -->
 </head>
 
-<body>
+<body onload="LoadProjects()">
     <div class="container col-lg-8 col-lg-push-2">
         <div class="input-group col-lg-4">
-            <input type="text" class="form-control" placeholder="Project Name" aria-label="Project Name"
+            <input id="input-project" type="text" class="form-control" placeholder="Project Name" aria-label="Project Name"
                 aria-describedby="button-addon2">
             <div class="input-group-append">
-                <button class="btn btn-primary" type="button" id="button-addon2">New</button>
+                <button class="btn-create-project btn btn-primary" type="button" id="button-addon2">New</button>
             </div>
         </div>
 
@@ -134,7 +134,7 @@
 
 
         <form action="/AddTemplate" method="POST">
-            <div class="col-sm-6 float-right">
+            <div class="col-sm-6">
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
@@ -215,27 +215,23 @@
                 </table>
 
             </div>
-
+            <div class="item">
+                <span class="col-sm-2">Choose Project:</span>
+                <div class="dropdown col-sm-2 d-inline">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </button>
+                    <div id="project-dropdown" class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    </div>
+                </div>
+                Template Name: <input type="text" name="filename" />
+                <input id="btn-template-name" type="submit" class="btn btn-primary" value="New Template" />
+            </div>
         </form>
 
-        <div class="item">
-            Choose Project:
-            <div class="dropdown col-sm-4">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <button class="dropdown-item" type="button">Action</button>
-                    <button class="dropdown-item" type="button">Another action</button>
-                    <button class="dropdown-item" type="button">Something else here</button>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            Template Name: <input type="text" name="filename" />
-            <input id="add" type="submit" class="btn btn-primary" value="New Template" />
-        </div>
+
+
     </div>
 </body>
 

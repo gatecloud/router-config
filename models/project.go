@@ -6,5 +6,5 @@ type Project struct {
 	Model
 	Name   string `validate:"required"`
 	UserID uuid.UUID
-	User   User
+	User   User `json:"-" sql:"-"`
 }

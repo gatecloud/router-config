@@ -1,8 +1,10 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"router-config/models"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,21 +28,28 @@ func (ctrl *ProjectController) Post(ctx *gin.Context) {
 		return
 	}
 
+	entity.DeletedAt = &time.Time{}
 	if err := ctrl.DB.Create(&entity).Error; err != nil {
 		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
+	ctx.JSON(http.StatusOK, entity)
+	return
 }
 
-func (ctrl *ProjectController) GetByAll(ctx *gin.Context) {
+func (ctrl *ProjectController) GetAll(ctx *gin.Context) {
 	var (
 		entities []models.Project
 	)
 
 	if err := ctrl.DB.Find(&entities).Error; err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		// if ctrl.DB.Find(&entities).RecordNotFound() {
+		ctx.JSON(http.StatusNoContent, nil)
 		return
 	}
+	fmt.Println("---", entities)
 
+	ctx.JSON(http.StatusOK, entities)
+	return
 }

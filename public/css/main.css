@@ -77,8 +77,8 @@ div.group {
 }
 
 .item{
-    display:inline;
     border:1px solid red;
+    text-align: left;
 }
 
 td{
@@ -125,6 +125,3 @@ div{
 
 
 
-.item div{
-    float:right;
-}
