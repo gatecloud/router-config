@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
+	"router-config/configs"
 	"router-config/logic"
 	"strings"
 	"time"
@@ -11,6 +13,9 @@ import (
 )
 
 func main() {
+	if err := configs.InitConfig(); err != nil {
+		log.Fatal(err)
+	}
 	r := gin.Default()
 	r.HandleMethodNotAllowed = true
 	r.StaticFS("/public", http.Dir("public"))
