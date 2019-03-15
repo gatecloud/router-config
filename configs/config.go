@@ -7,12 +7,10 @@ import (
 	"strconv"
 	"time"
 
-	libConfig "github.com/gatecloud/webservice-library/config"
 	"github.com/joho/godotenv"
 )
 
 type LocalConfig struct {
-	libConfig.Config
 	Port             string `json:"port"`
 	DbEngine         string `json:"db_engine"`
 	DbConn           string `json:"db_conn"`

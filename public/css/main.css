@@ -3,7 +3,6 @@ body{
     margin: 0 auto;
     width: 100%;
     height: auto;
-    /* border: 1px solid #FF0000; */
     padding-bottom: 500px;
 }
 
@@ -77,8 +76,13 @@ div.group {
     
 }
 
+.item{
+    display:inline;
+    border:1px solid red;
+}
+
 td{
-   width: 300px; 
+    border:1px solid red;
 }
 
 .card {
@@ -99,4 +103,28 @@ td{
 .key{
     color: darkred;
     font-size: 15px;
+}
+
+
+.middle_textarea{
+    width:500px;
+    height:400px;
+}
+
+.resource-label{
+    margin-right:10px;
+}
+
+.resource-label:hover{
+    cursor: pointer;
+}
+
+div{
+    margin-bottom: 5px;
+}
+
+
+
+.item div{
+    float:right;
 }
