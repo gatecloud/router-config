@@ -27,6 +27,12 @@ $(function () {
         })
     })
 
+    $("#btn-new-template").click(function(){
+        if ($(this).prev("input[text]").val() == ""){
+            alert("Input template name");
+        }
+    })
+
 })
 
 var domain = "http://localhost:7000/api";

@@ -11,15 +11,15 @@ import (
 )
 
 type LocalConfig struct {
-	Port             string `json:"port"`
-	DbEngine         string `json:"db_engine"`
-	DbConn           string `json:"db_conn"`
-	Production       bool   `json:"production"`
-	AWSS3Key         string `json:"aws_s3_key"`
-	AWSS3Secret      string `json:"aws_s3_secret"`
-	AWSS3Region      string `json:"aws_s3_region"`
-	AWSS3ImageDomain string `json:"aws_s3_image_domain"`
-	LegalFileExt     string `json:"legal_file_ext"`
+	Port         string `json:"port"`
+	DbEngine     string `json:"db_engine"`
+	DbConn       string `json:"db_conn"`
+	Production   bool   `json:"production"`
+	AWSS3Key     string `json:"aws_s3_key"`
+	AWSS3Secret  string `json:"aws_s3_secret"`
+	AWSS3Region  string `json:"aws_s3_region"`
+	AWSS3Domain  string `json:"aws_s3_domain"`
+	LegalFileExt string `json:"legal_file_ext"`
 }
 
 // Configuration is proxy's global configuration

@@ -20,5 +20,10 @@ func init() {
 			Controller: reflect.TypeOf(controllers.ProjectController{}),
 			Model:      &models.Project{},
 		},
+		libRoute.Route{
+			Name:       "Templates",
+			Controller: reflect.TypeOf(controllers.TemplateController{}),
+			Model:      &models.Template{},
+		},
 	}
 }

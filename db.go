@@ -17,6 +17,7 @@ func InitDB() (*gorm.DB, error) {
 	if !configs.Configuration.Production {
 		if err = db.AutoMigrate(
 			models.Project{},
+			models.Template{},
 		).Error; err != nil {
 			return nil, err
 		}

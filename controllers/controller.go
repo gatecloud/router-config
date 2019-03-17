@@ -2,9 +2,14 @@ package controllers
 
 import (
 	"net/http"
+	"router-config/configs"
 
 	"gopkg.in/go-playground/validator.v8"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
@@ -54,6 +59,26 @@ func (ctrl *Control) GetByID(ctx *gin.Context) {
 func (ctrl *Control) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusMethodNotAllowed, nil)
 	return
+}
+
+func (ctrl *Control) CreateAWSUploader() (*s3manager.Uploader, error) {
+	var err error
+	creds := credentials.NewStaticCredentials(configs.Configuration.AWSS3Key,
+		configs.Configuration.AWSS3Secret,
+		"")
+	if _, err = creds.Get(); err != nil {
+		return nil, err
+	}
+
+	config := aws.NewConfig().
+		WithRegion(configs.Configuration.AWSS3Region).
+		WithCredentials(creds)
+	awsSession, err := session.NewSession(config)
+	if err != nil {
+		return nil, err
+	}
+
+	return s3manager.NewUploader(awsSession), nil
 }
 
 // RedirectError redirects to the error page
