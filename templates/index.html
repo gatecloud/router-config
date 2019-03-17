@@ -4,15 +4,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <link href="/public/css/bootstrap.css" rel="stylesheet" />
     <link href="/public/css/main.css" rel="stylesheet" />
+    <link href="/public/css/bootstrap.css" rel="stylesheet" />
     <script type="text/javascript" src="/public/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="/public/js/bootstrap.bundle.js"></script>
     <script type="text/javascript" src="/public/js/bootstrap.js"></script>
     <script type="text/javascript" src="/public/js/index.js"></script>
     <title>Route Gen</title>
 
-    <!-- <script type="text/javascript">
+    <script type="text/javascript">
         $(function () {
             // $.get("http://localhost:7000/GetFiles", function(data, status){
             //     alert(data)
@@ -84,137 +84,110 @@
             })
 
         })
-    </script> -->
+    </script>
 </head>
 
 <body onload="LoadProjects()">
     <div class="container col-lg-8 col-lg-push-2">
         <div class="input-group col-lg-4">
-            <input id="input-project" type="text" class="form-control" placeholder="Project Name" aria-label="Project Name"
-                aria-describedby="button-addon2">
-            <div class="input-group-append">
+            <input id="input-project" type="text" class="form-control" placeholder="Project Name"
+                aria-label="Project Name" aria-describedby="button-addon2">
+            <div class="input-group-append col-sm-2">
                 <button class="btn-create-project btn btn-primary" type="button" id="button-addon2">New</button>
             </div>
         </div>
-
-
-
-
-        <div class="col-sm-4 col-sm-push-8">
-            <div id="file" class="card">
-                <h3>
-                    Download Files
-                </h3>
-                <div class="list-group">
-                    {{ range $i, $v := .Files }}
-                    <div class="file-group list-group-item list-group-item-action">
-                        <a href={{ $v.URL }}> {{ $v.FileName }} </a>
-                    </div>
-                    {{ end }}
-                </div>
-            </div>
-            <div class="list-group">
-                <h3>Template List</h3>
-                <!-- <a href="#" class="list-group-item list-group-item-action active">
-                                          Cras justo odio
-                                        </a> -->
-                {{ range $i, $v := .Groups }}
-                <div class="template-group list-group-item list-group-item-action">
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                    <a href="#"> {{ $v.FileName }} </a>
-                </div>
-                <!-- <a href= {{ $v.URL }} class="list-group-item list-group-item-action"> {{ $v.FileName }} </a> -->
-                {{ end }}
-            </div>
-            Exported File Name: <input type="text" id="exported-file-name" />
-            <input id="export" type="button" class="btn btn-primary" value="Export JSON" />
-            <input id="delete" type="button" class="btn btn-primary" value="Delete" />
-        </div>
-
-
-
         <form action="/AddTemplate" method="POST">
-            <div class="col-sm-6">
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">#
-                            </th>
-                            <th scope="col">Field Name</th>
-                            <th scope="col">Field Valudes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr scope="row">
-                            <th> 1</th>
-                            <td>
-                                Resource
-                            </td>
-                            <td>
-                                <input type="text" text="" />
-                                <button id="btn-resource" type="button" class="btn btn-dark">Add</button>
-                                <div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <th> 2</th>
-                            <td>
-                                Method
-                            </td>
-                            <td>
-                                <textarea class="middle_textarea" name="method" text=""></textarea>
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <th> 3</th>
-                            <td>
-                                Version
-                            </td>
-                            <td>
-                                <input type="text" name="version" text="" />
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <th> 4</th>
-                            <td>
-                                Proxy Schema
-                            </td>
-                            <td>
-                                <input type="text" name="proxy_schema" text="" />
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <th> 5</th>
-                            <td>
-                                Proxy Pass
-                            </td>
-                            <td>
-                                <input type="text" name="proxy_pass" text="" />
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <th> 6</th>
-                            <td>
-                                Proxy Version
-                            </td>
-                            <td>
-                                <input type="text" name="proxy_version" text="" />
-                            </td>
-                        </tr>
-                        <tr scope="row">
-                            <th> 7</th>
-                            <td>
-                                Custom Configuration
-                            </td>
-                            <td>
-                                <textarea name="custom_config" class="middle_textarea"></textarea>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <table class="table table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Field Name</th>
+                        <th scope="col">Field Valudes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr scope="row">
+                        <th> 1</th>
+                        <td>Resource</td>
+                        <td>
+                            <input type="text" text="" />
+                            <button id="btn-resource" type="button" class="btn btn-dark">Add</button>
+                            <div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr scope="row">
+                        <th> 2</th>
+                        <td>Method</td>
+                        <td>
+                            <div class="form-check form-check-inline col-sm-2">
+                                <input class="form-check-input" type="checkbox" id="chk-method-patch" value="option2">
+                                <label for="chk-method-patch">PATCH</label>
+                            </div>
+                            <div class="form-check form-check-inline col-sm-2">
+                                <input class="form-check-input" type="checkbox" id="chk-method-delete" value="option2">
+                                <label for="chk-method-delete">DELETE</label>
+                            </div>
+                            <div class="form-check form-check-inline col-sm-2">
+                                <input class="form-check-input" type="checkbox" id="chk-method-get" value="option2">
+                                <label for="chk-method-get">GET</label>
+                            </div><br />
+                            <div class="form-check form-check-inline col-sm-2">
+                                <input class="form-check-input" type="checkbox" id="chk-method-option" value="option2">
+                                <label for="chk-method-option">OPTIONS</label>
+                            </div>
+                            <div class="form-check form-check-inline col-sm-2">
+                                <input class="form-check-input" type="checkbox" id="chk-method-any" value="option2">
+                                <label for="chk-method-any">ANY</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr scope="row">
+                        <th> 3</th>
+                        <td> Version </td>
+                        <td>
+                            <input type="text" name="version" text="" />
+                        </td>
+                    </tr>
+                    <tr scope="row">
+                        <th> 4</th>
+                        <td>
+                            Proxy Schema
+                        </td>
+                        <td>
+                            <input type="text" name="proxy_schema" text="" />
+                        </td>
+                    </tr>
+                    <tr scope="row">
+                        <th> 5</th>
+                        <td> Proxy Pass </td>
+                        <td>
+                            <input type="text" name="proxy_pass" text="" />
+                        </td>
+                    </tr>
+                    <tr scope="row">
+                        <th> 6</th>
+                        <td> Proxy Version </td>
+                        <td>
+                            <input type="text" name="proxy_version" text="" />
+                        </td>
+                    </tr>
+                    <tr scope="row">
+                        <th> 7</th>
+                        <td> Custom Configuration </td>
+                        <td>
+                            <textarea id="custom-config-textarea" name="custom_config" disabled>
+{
+    "Authentication": false,
+    "Cached": true,
+    "CachedDurationsInSecond": 10
+}
+                            </textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-            </div>
             <div class="item">
                 <span class="col-sm-2">Choose Project:</span>
                 <div class="dropdown col-sm-2 d-inline">

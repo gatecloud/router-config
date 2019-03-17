@@ -82,7 +82,7 @@ div.group {
 }
 
 td{
-    border:1px solid red;
+    padding: 5px, 10px;
 }
 
 .card {
@@ -105,12 +105,6 @@ td{
     font-size: 15px;
 }
 
-
-.middle_textarea{
-    width:500px;
-    height:400px;
-}
-
 .resource-label{
     margin-right:10px;
 }
@@ -125,3 +119,9 @@ div{
 
 
 
+
+#custom-config-textarea{
+    width:300px;
+    height:200px;
+    resize:none;
+}

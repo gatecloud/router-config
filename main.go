@@ -38,8 +38,8 @@ func main() {
 	r := gin.Default()
 	r.HandleMethodNotAllowed = true
 	r.StaticFS("/public", http.Dir("public"))
-	// r.StaticFS("/groups", http.Dir("groups"))
-	// r.StaticFS("/files", http.Dir("files"))
+	r.StaticFS("/groups", http.Dir("groups"))
+	r.StaticFS("/files", http.Dir("files"))
 	r.LoadHTMLGlob("templates/*")
 
 	sr := &libRoute.Resource{

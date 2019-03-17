@@ -9,6 +9,8 @@ $(function () {
         resource = $(this).siblings("input").val();
         $label = '<span class="resource-label badge badge-success">' + resource + '</span>';
         $(this).next("div").append($label);
+        alert($(this));
+
     })
 
 
@@ -16,11 +18,11 @@ $(function () {
         $(this).remove();
     })
 
-    $(".btn-create-project").click(function(){
-        $.post(domain+"/Projects", {
+    $(".btn-create-project").click(function () {
+        $.post(domain + "/Projects", {
             Name: $("#input-project").val()
 
-        },function(result){
+        }, function (result) {
             alert(result);
         })
     })
@@ -31,8 +33,8 @@ var domain = "http://localhost:7000/api";
 
 function LoadProjects() {
     $.get(domain + "/Projects", function (data, status) {
-        $.each(data, function(index, element){
-            $option = '<button class="dropdown-item" type="button">'+element.Name+'</button>';
+        $.each(data, function (index, element) {
+            $option = '<button class="dropdown-item" type="button">' + element.Name + '</button>';
             $("#project-dropdown").append($option);
         })
     })
