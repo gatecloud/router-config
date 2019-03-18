@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"router-config/models"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,7 +27,7 @@ func (ctrl *ProjectController) Post(ctx *gin.Context) {
 		return
 	}
 
-	entity.DeletedAt = &time.Time{}
+	entity.DeletedAt = nil
 	if err := ctrl.DB.Create(&entity).Error; err != nil {
 		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
 		return
