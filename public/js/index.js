@@ -59,9 +59,6 @@ $(function () {
             }
         })
         methods = methods.slice(0, methods.length - 1);
-
-        alert($("#project-dropdown").find(":selected").text());
-
         var template = {
             Resource: resources,
             Method: methods,
@@ -88,7 +85,7 @@ var domain = "http://localhost:7000/api";
 function LoadProjects() {
     $.get(domain + "/Projects", function (data, status) {
         $.each(data, function (index, element) {
-            $option = '<option class="resource-label" value=' + element.Name + '>' + element.Name+ '</option>';
+            $option = '<option value=' + element.Name + '>' + element.Name+ '</option>';
             $("#project-dropdown").append($option);
         })
     })

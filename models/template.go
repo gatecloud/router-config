@@ -23,7 +23,7 @@ type Template struct {
 }
 
 func (t *Template) UploadFile(uploader *s3manager.Uploader, domain string, b []byte) error {
-	name := t.ProjectName + t.TemplateName
+	name := t.ProjectName + t.TemplateName + ".json"
 	bucket := regexp.MustCompile("/{1}[a-zA-Z0-9-]+/{1}").
 		FindString(domain)
 	result, err := uploader.Upload(

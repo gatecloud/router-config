@@ -32,7 +32,6 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
 	}
-	fmt.Println(entity)
 
 	if !ctrl.DB.Where("project_name = ? and template_name = ?", entity.ProjectName, entity.TemplateName).
 		Find(&chkTemplate).
@@ -43,6 +42,7 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 	}
 
 	routerTemplate.Resources = strings.Split(filterString(entity.Resource), " ")
+	// TODO: for loop and make a real json file
 	routerTemplate.Methods = strings.Split(filterString(entity.Method), " ")
 	routerTemplate.Version = entity.Version
 	routerTemplate.ProxySchema = entity.ProxySchema
