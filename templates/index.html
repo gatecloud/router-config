@@ -96,115 +96,109 @@
                 <button class="btn-create-project btn btn-primary" type="button" id="button-addon2">New</button>
             </div>
         </div>
-        <form action="/AddTemplate" method="POST">
-            <table class="table table-sm table-responsive table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Field Name</th>
-                        <th scope="col">Field Valudes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr scope="row">
-                        <th> 1</th>
-                        <td>Resource</td>
-                        <td>
-                            <input type="text" text="" />
-                            <button id="btn-resource" type="button" class="btn btn-dark">Add</button>
-                            <div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr scope="row">
-                        <th> 2</th>
-                        <td>Method</td>
-                        <td>
-                            <div class="form-check form-check-inline col-sm-2">
-                                <input class="form-check-input" type="checkbox" id="chk-method-patch" value="option2">
-                                <label for="chk-method-patch">PATCH</label>
-                            </div>
-                            <div class="form-check form-check-inline col-sm-2">
-                                <input class="form-check-input" type="checkbox" id="chk-method-delete" value="option2">
-                                <label for="chk-method-delete">DELETE</label>
-                            </div>
-                            <div class="form-check form-check-inline col-sm-2">
-                                <input class="form-check-input" type="checkbox" id="chk-method-get" value="option2">
-                                <label for="chk-method-get">GET</label>
-                            </div><br />
-                            <div class="form-check form-check-inline col-sm-2">
-                                <input class="form-check-input" type="checkbox" id="chk-method-option" value="option2">
-                                <label for="chk-method-option">OPTIONS</label>
-                            </div>
-                            <div class="form-check form-check-inline col-sm-2">
-                                <input class="form-check-input" type="checkbox" id="chk-method-any" value="option2">
-                                <label for="chk-method-any">ANY</label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr scope="row">
-                        <th> 3</th>
-                        <td> Version </td>
-                        <td>
-                            <input type="text" name="version" text="" />
-                        </td>
-                    </tr>
-                    <tr scope="row">
-                        <th> 4</th>
-                        <td>
-                            Proxy Schema
-                        </td>
-                        <td>
-                            <input type="text" name="proxy_schema" text="" />
-                        </td>
-                    </tr>
-                    <tr scope="row">
-                        <th> 5</th>
-                        <td> Proxy Pass </td>
-                        <td>
-                            <input type="text" name="proxy_pass" text="" />
-                        </td>
-                    </tr>
-                    <tr scope="row">
-                        <th> 6</th>
-                        <td> Proxy Version </td>
-                        <td>
-                            <input type="text" name="proxy_version" text="" />
-                        </td>
-                    </tr>
-                    <tr scope="row">
-                        <th> 7</th>
-                        <td> Custom Configuration </td>
-                        <td>
-                            <textarea id="custom-config-textarea" name="custom_config" disabled>
+        <table class="table table-sm table-responsive table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Field Name</th>
+                    <th scope="col">Field Valudes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr scope="row">
+                    <th> 1</th>
+                    <td>Resource</td>
+                    <td>
+                        <input type="text" text="" />
+                        <button id="btn-resource" type="button" class="btn btn-dark">Add</button>
+                        <div>
+                        </div>
+                    </td>
+                </tr>
+                <tr scope="row" id="method-check">
+                    <th> 2</th>
+                    <td>Method</td>
+                    <td>
+                        <div class="form-check form-check-inline col-sm-2">
+                            <input class="form-check-input" type="checkbox" id="chk-method-patch" value="PATCH">
+                            <label for="chk-method-patch">PATCH</label>
+                        </div>
+                        <div class="form-check form-check-inline col-sm-2">
+                            <input class="form-check-input" type="checkbox" id="chk-method-delete" value="DELETE">
+                            <label for="chk-method-delete">DELETE</label>
+                        </div>
+                        <div class="form-check form-check-inline col-sm-2">
+                            <input class="form-check-input" type="checkbox" id="chk-method-get" value="GET">
+                            <label for="chk-method-get">GET</label>
+                        </div><br />
+                        <div class="form-check form-check-inline col-sm-2">
+                            <input class="form-check-input" type="checkbox" id="chk-method-option" value="OPTIONS">
+                            <label for="chk-method-option">OPTIONS</label> </div>
+                        <div class="form-check form-check-inline col-sm-2">
+                            <input class="form-check-input" type="checkbox" id="chk-method-any" value="ANY">
+                            <label for="chk-method-any">ANY</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr scope="row">
+                    <th> 3</th>
+                    <td> Version </td>
+                    <td>
+                        <input id="version" class="tm-check" type="text" name="version" text="" />
+                    </td>
+                </tr>
+                <tr scope="row">
+                    <th> 4</th>
+                    <td>
+                        Proxy Schema
+                    </td>
+                    <td>
+                        <input id="proxySchema" class="tm-check" type="text" name="proxy_schema" text="" />
+                    </td>
+                </tr>
+                <tr scope="row">
+                    <th> 5</th>
+                    <td> Proxy Pass </td>
+                    <td>
+                        <input id="proxyPass" class="tm-check" type="text" name="proxy_pass" text="" />
+                    </td>
+                </tr>
+                <tr scope="row">
+                    <th> 6</th>
+                    <td> Proxy Version </td>
+                    <td>
+                        <input id="proxyVersion" class="tm-check" type="text" name="proxy_version" text="" />
+                    </td>
+                </tr>
+                <tr scope="row">
+                    <th> 7</th>
+                    <td> Custom Configuration </td>
+                    <td>
+                        <textarea class="tm-check" id="custom-config-textarea" name="custom_config" disabled>
 {
     "Authentication": false,
     "Cached": true,
     "CachedDurationsInSecond": 10
 }
                             </textarea>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-            <div class="item">
-                <span class="col-sm-2">Choose Project:</span>
-                <div class="dropdown col-sm-2 d-inline">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                    </button>
-                    <div id="project-dropdown" class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    </div>
+        <div>
+            <div class="input-group col-sm-6 float-left">
+                <div class="input-group-prepend col-sm-3">
+                    <label class="input-group-text" for="project-dropdown">Choose Project</label>
                 </div>
-                Template Name: <input id="text-template" type="text" name="filename" />
-                <input id="btn-new-template" type="submit" class="btn btn-primary" value="New Template" />
+                <select id="project-dropdown" class="custom-select">
+                    <option selected>---</option>
+                </select>
             </div>
-        </form>
 
-
-
+            Template Name: <input id="text-template" type="text" name="filename" />
+            <input id="btn-new-template" type="button" class="btn btn-primary" value="New Template" />
+        </div>
     </div>
 </body>
 

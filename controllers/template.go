@@ -28,9 +28,11 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 	}
 
 	if err := ctrl.Validator.Struct(entity); err != nil {
+		fmt.Println(err)
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
 	}
+	fmt.Println(entity)
 
 	if !ctrl.DB.Where("project_name = ? and template_name = ?", entity.ProjectName, entity.TemplateName).
 		Find(&chkTemplate).
@@ -68,6 +70,7 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 		return
 	}
 
+	entity.DeletedAt = nil
 	if err := ctrl.DB.Create(&entity).Error; err != nil {
 		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
 		return
