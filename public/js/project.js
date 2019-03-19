@@ -26,18 +26,39 @@ $(function () {
 
     // Post project 
     $("#btn-create-project").click(function () {
-        var tags="";
-        $(".router-label").each(function(index){
-            tags += $(this).html()+",";
+        var tags = "";
+        $(".router-label").each(function (index) {
+            tags += $(this).html() + ",";
         })
         var project = {
             Name: $("#input-project").val(),
-            RouterGroups: tags.slice(0, tags.length-1)
+            RouterGroups: tags.slice(0, tags.length - 1)
         }
         $.post(domain + "/Projects", project, function (result) {
-            alert(result);
+            Load();
         })
-        
+
     })
 })
 
+
+function Load() {
+    $.get(domain + "/Projects", function (data, status) {
+        $.each(data, function (index, element) {
+            $tr = `<tr>
+                    <th scope="row">
+                        <div class="form-check form-check-inline col-sm-2">
+                            <input class="form-check-input" type="checkbox" >
+                        </div>
+                    </th>
+                    <td>`+ element.Name + `</td>
+                    <td>`+ element.RouterGroups + `</td>
+                    <td>
+                        <button id="btn-delete" type="button" class="btn btn-danger">Delete</button>
+                        <hidden value=`+ element.ID + `></hidden>
+                    </td>
+                </tr>`
+            $("#tbl-project tbody").append($tr);
+        })
+    })
+}
