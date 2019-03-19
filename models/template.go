@@ -20,12 +20,13 @@ type Template struct {
 	ProxyVersion string `validate:"required"`
 	CustomConfig string `validate:"required"`
 	ProjectName  string `validate:"required"`
+	RouterGroup  string `validate:"required"`
 	TemplateName string `validate:"required"`
 	URL          string
 }
 
 func (t *Template) UploadFile(uploader *s3manager.Uploader, domain string, b []byte) error {
-	name := t.ProjectName + t.TemplateName + ".json"
+	name := t.ProjectName + "-" + t.RouterGroup + "-" + t.TemplateName + ".json"
 	bucket := regexp.MustCompile("/{1}[a-zA-Z0-9-]+/{1}").
 		FindString(domain)
 	result, err := uploader.Upload(

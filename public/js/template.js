@@ -50,17 +50,47 @@ $(function () {
     })
 
     // Post template 
-    $("#btn-create-project").click(function () {
-        var tags = "";
-        $(".router-label").each(function (index) {
-            tags += $(this).html() + ",";
+    $("#btn-create-template").click(function () {
+        // Validation
+        // if ($(".tm-check").val() == "") {
+        //     alert("No blank");
+        //     return;
+        // }
+
+        var resources = ""
+        $(".resource-label").each(function (index) {
+            resources += $(this).html() + ",";
         })
-        var project = {
-            Name: $("#input-project").val(),
-            RouterGroups: tags.slice(0, tags.length - 1)
+        resources = resources.slice(0, resources.length - 1);
+        var rsValidation = resources.replace(',', '');
+        if (rsValidation == "") {
+            alert("No blank");
+            return;
         }
-        $.post(domain + "/Projects", project, function (result) {
-            Load();
+
+        var methods = ""
+        $("#method-check .form-check").each(function (index) {
+            if ($(this).find("input").attr("checked") == "checked") {
+                methods += $(this).find("input").val() + ",";
+            }
+        })
+        methods = methods.slice(0, methods.length - 1);
+        var template = {
+            Resource: resources,
+            Method: methods,
+            Version: $("#version").val(),
+            ProxySchema: $("#proxy-schema-dropdown").find(":selected").text(),
+            ProxyPass: $("#proxyPass").val(),
+            ProxyVersion: $("#proxyVersion").val(),
+            CustomConfig: $("#custom-config-textarea").html(),
+            ProjectName: $("#project-dropdown").find(":selected").text(),
+            RouterGroup: $("#router-dropdown").find(":selected").text(),
+            TemplateName: $("#text-template").val()
+
+        }
+        // Post
+        $.post(domain + "/Templates", template, function (result) {
+            locaton.reload(true);
         })
     })
 

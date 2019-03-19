@@ -31,7 +31,8 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 		return
 	}
 
-	if !ctrl.DB.Where("project_name = ? and template_name = ?", entity.ProjectName, entity.TemplateName).
+	if !ctrl.DB.Where("project_name = ? and router_group = ? and template_name = ?",
+		entity.ProjectName, entity.RouterGroup, entity.TemplateName).
 		Find(&chkTemplate).
 		RecordNotFound() {
 		err := fmt.Errorf("%s/%s is existed", entity.ProjectName, entity.TemplateName)
@@ -41,6 +42,7 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 
 	routerTemplate, err := entity.Convert2RouterTemplate()
 	if err != nil {
+		fmt.Println(err)
 		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
 		return
 	}

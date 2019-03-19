@@ -1,5 +1,7 @@
 package models
 
+import "fmt"
+
 type CustomConfig map[string]interface{}
 
 type RouterTemplate struct {
@@ -10,6 +12,7 @@ type RouterTemplate struct {
 	ProxyPass     string
 	ProxyVersion  string
 	CustomeConfig CustomConfig
+	RouterGroup   string
 }
 
 const (
@@ -20,13 +23,14 @@ func (rt *RouterTemplate) GenerateRouters() []Router {
 	var (
 		routers []Router
 	)
+	fmt.Println(rt.Methods)
 	for _, resource := range rt.Resources {
 		for _, method := range rt.Methods {
 			path := ""
 			if rt.Version != "" {
-				path = PATH_SEPARATOR + rt.Version + PATH_SEPARATOR + resource
+				path = PATH_SEPARATOR + rt.Version + PATH_SEPARATOR + rt.RouterGroup + PATH_SEPARATOR + resource
 			} else {
-				path = PATH_SEPARATOR
+				path = PATH_SEPARATOR + rt.RouterGroup + PATH_SEPARATOR + resource
 			}
 
 			routers = append(routers, Router{
