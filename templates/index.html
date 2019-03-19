@@ -87,7 +87,7 @@
     </script>
 </head>
 
-<body onload="LoadProjects()">
+<body onload="Load()">
     <div class="container col-lg-8 col-lg-push-2">
         <div class="input-group col-lg-4">
             <input id="input-project" type="text" class="form-control" placeholder="Project Name"
@@ -96,6 +96,30 @@
                 <button class="btn-create-project btn btn-primary" type="button" id="button-addon2">New</button>
             </div>
         </div>
+
+        <div class="col-sm-4 col-sm-push-8 float-left">
+            <div id="file" class="card">
+                <h3>
+                    Download Files
+                </h3>
+                <!-- <div class="list-group">
+                    {{ range $i, $v := .Files }}
+                    <div class="file-group list-group-item list-group-item-action">
+                        <a href="file:///C:/Users/ZetaAppXeon/AppData/Local/Temp/%7B%7B" $v.url="" }}="">
+                            {{ $v.FileName }} </a>
+                    </div>
+                    {{ end }}
+                </div> -->
+            </div>
+            <div class="template-list list-group">
+                <h3>Templates</h3>
+            </div>
+            Exported File Name: <input type="text" id="exported-file-name">
+            <input id="export" type="button" class="btn btn-primary" value="Export JSON">
+            <input id="delete" type="button" class="btn btn-primary" value="Delete">
+        </div>
+
+
         <table class="table table-sm table-responsive table-hover">
             <thead class="thead-dark">
                 <tr>

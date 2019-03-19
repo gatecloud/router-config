@@ -51,21 +51,21 @@ func main() {
 	libRoute.DistributeRouters(apiRouter, routers.RouteMap["api"], sr)
 
 	r.GET("/index", func(ctx *gin.Context) {
-		files, err := logic.ToList("files/")
-		if err != nil {
-			RedirectError(ctx, http.StatusInternalServerError, err)
-			return
-		}
+		// files, err := logic.ToList("files/")
+		// if err != nil {
+		// 	RedirectError(ctx, http.StatusInternalServerError, err)
+		// 	return
+		// }
 
-		groups, err := logic.ToList("groups/")
-		if err != nil {
-			RedirectError(ctx, http.StatusInternalServerError, err)
-			return
-		}
+		// groups, err := logic.ToList("groups/")
+		// if err != nil {
+		// 	RedirectError(ctx, http.StatusInternalServerError, err)
+		// 	return
+		// }
 
 		ctx.HTML(http.StatusOK, "index.html", gin.H{
-			"Groups": groups,
-			"Files":  files,
+		// "Groups": groups,
+		// "Files":  files,
 		})
 	})
 

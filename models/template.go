@@ -2,7 +2,9 @@ package models
 
 import (
 	"bytes"
+	"encoding/json"
 	"regexp"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
@@ -37,4 +39,31 @@ func (t *Template) UploadFile(uploader *s3manager.Uploader, domain string, b []b
 	}
 	t.URL = result.Location
 	return nil
+}
+
+func (t *Template) Convert2RouterTemplate() (RouterTemplate, error) {
+	var customConfig CustomConfig
+	if err := json.Unmarshal([]byte(t.CustomConfig), &customConfig); err != nil {
+		return RouterTemplate{}, err
+	}
+	return RouterTemplate{
+		Resources:     strings.Split(filterString(t.Resource), " "),
+		Methods:       strings.Split(filterString(t.Method), " "),
+		Version:       t.Version,
+		ProxySchema:   t.ProxySchema,
+		ProxyPass:     t.ProxyPass,
+		ProxyVersion:  t.ProxyVersion,
+		CustomeConfig: customConfig,
+	}, nil
+}
+
+func filterString(src string) string {
+	dst := strings.Replace(src, "\r\n", "", -1)
+	dst = strings.Replace(dst, "\"", "", -1)
+	dst = strings.Replace(dst, "\t", "", -1)
+	dst = strings.Replace(dst, "\n", "", -1)
+	dst = strings.Replace(dst, "\r", "", -1)
+	dst = strings.Replace(dst, " ", "", -1)
+	dst = strings.Replace(dst, ",", " ", -1)
+	return dst
 }

@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"router-config/configs"
 	"router-config/models"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,9 +16,8 @@ type TemplateController struct {
 
 func (ctrl *TemplateController) Post(ctx *gin.Context) {
 	var (
-		entity         models.Template
-		routerTemplate models.RouterTemplate
-		chkTemplate    models.Template
+		entity      models.Template
+		chkTemplate models.Template
 	)
 
 	if err := ctx.Bind(&entity); err != nil {
@@ -41,19 +39,14 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 		return
 	}
 
-	routerTemplate.Resources = strings.Split(filterString(entity.Resource), " ")
-	// TODO: for loop and make a real json file
-	routerTemplate.Methods = strings.Split(filterString(entity.Method), " ")
-	routerTemplate.Version = entity.Version
-	routerTemplate.ProxySchema = entity.ProxySchema
-	routerTemplate.ProxyPass = entity.ProxyPass
-	routerTemplate.ProxyVersion = entity.ProxyVersion
-	if err := json.Unmarshal([]byte(entity.CustomConfig), &routerTemplate.CustomeConfig); err != nil {
-		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+	routerTemplate, err := entity.Convert2RouterTemplate()
+	if err != nil {
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
-	body, err := json.MarshalIndent(routerTemplate, "", "\t")
+	routers := routerTemplate.GenerateRouters()
+	body, err := json.MarshalIndent(routers, "", "\t")
 	if err != nil {
 		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
 		return
@@ -96,13 +89,16 @@ func (ctrl *TemplateController) GetByID(ctx *gin.Context) {
 	return
 }
 
-func filterString(src string) string {
-	dst := strings.Replace(src, "\r\n", "", -1)
-	dst = strings.Replace(dst, "\"", "", -1)
-	dst = strings.Replace(dst, "\t", "", -1)
-	dst = strings.Replace(dst, "\n", "", -1)
-	dst = strings.Replace(dst, "\r", "", -1)
-	dst = strings.Replace(dst, " ", "", -1)
-	dst = strings.Replace(dst, ",", " ", -1)
-	return dst
+func (ctrl *TemplateController) GetAll(ctx *gin.Context) {
+	var (
+		entities []models.Template
+	)
+
+	if ctrl.DB.Find(&entities).RecordNotFound() {
+		ctx.JSON(http.StatusNoContent, nil)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, entities)
+	return
 }

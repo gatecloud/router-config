@@ -1,6 +1,4 @@
 $(function () {
-
-
     $("input[text]").focus(function () {
         $(this).val("");
     })
@@ -75,18 +73,30 @@ $(function () {
         $.post(domain + "/Templates", template, function (result) {
             locaton.reload(true);
         })
-
     })
+
 
 })
 
 var domain = "http://localhost:7000/api";
 
-function LoadProjects() {
+function Load() {
     $.get(domain + "/Projects", function (data, status) {
         $.each(data, function (index, element) {
-            $option = '<option value=' + element.Name + '>' + element.Name+ '</option>';
+            $option = '<option value=' + element.Name + '>' + element.Name + '</option>';
             $("#project-dropdown").append($option);
         })
     })
+
+    $.get(domain + "/Templates", function (data, status) {
+        $.each(data, function (index, element) {
+            $template = '<div class="template-group list-group-item list-group-item-action">' +
+                '<input type="checkbox" aria-label="Checkbox for following text input">' +
+                '<a href= ' + element.URL + '> ' + element.TemplateName + '</a>' +
+                '</div>'
+            $(".template-list").append($template);
+        })
+    })
+
+    
 }
