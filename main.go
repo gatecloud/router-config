@@ -76,6 +76,9 @@ func main() {
 	r.GET("/project", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "project.html", nil)
 	})
+	r.GET("/template", func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "template.html", nil)
+	})
 	r.POST("/AddTemplate", func(ctx *gin.Context) {
 		r := logic.RouterTemplate{}
 		resources := ctx.PostForm("resource")

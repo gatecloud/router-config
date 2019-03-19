@@ -65,6 +65,28 @@ func (ctrl *ProjectController) Delete(ctx *gin.Context) {
 	return
 }
 
+func (ctrl *ProjectController) GetByID(ctx *gin.Context) {
+	var (
+		chkEntity models.Project
+	)
+
+	name := ctx.Params.ByName("id")
+	if name == "" {
+		err := errors.New("name is required")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	if ctrl.DB.Where("name = ?", name).Find(&chkEntity).RecordNotFound() {
+		err := errors.New("project not found")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, chkEntity)
+	return
+}
+
 func (ctrl *ProjectController) GetAll(ctx *gin.Context) {
 	var (
 		entities []models.Project
