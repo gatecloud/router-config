@@ -37,13 +37,28 @@ $(function () {
         $.post(domain + "/Projects", project, function (result) {
             Load();
         })
+    })
 
+    // Delete Project
+    $("tbody").on("click", ".btn-delete", function(){
+        id = $(this).next().attr("value");
+        $.ajax({
+            url: domain + "/Projects/" + id,
+            method: 'DELETE',
+            success: function (result) {
+                Load();
+            },
+            error: function (request, msg, error) {
+                alert(error);
+            }
+        });
     })
 })
 
 
 function Load() {
     $.get(domain + "/Projects", function (data, status) {
+        $("tr").remove();
         $.each(data, function (index, element) {
             $tr = `<tr>
                     <th scope="row">
@@ -54,7 +69,7 @@ function Load() {
                     <td>`+ element.Name + `</td>
                     <td>`+ element.RouterGroups + `</td>
                     <td>
-                        <button id="btn-delete" type="button" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-danger btn-delete">Delete</button>
                         <hidden value=`+ element.ID + `></hidden>
                     </td>
                 </tr>`

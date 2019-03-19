@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"router-config/models"
@@ -34,6 +35,33 @@ func (ctrl *ProjectController) Post(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, entity)
+	return
+}
+
+func (ctrl *ProjectController) Delete(ctx *gin.Context) {
+	var (
+		chkEntity models.Project
+	)
+
+	idStr := ctx.Params.ByName("id")
+	if idStr == "" {
+		err := errors.New("id is required")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	if ctrl.DB.Where("id = ?", idStr).Find(&chkEntity).RecordNotFound() {
+		err := errors.New("project not found")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	if err := ctrl.DB.Unscoped().Delete(&chkEntity).Error; err != nil {
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, chkEntity)
 	return
 }
 
