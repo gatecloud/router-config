@@ -98,10 +98,8 @@
         </div>
 
         <div class="col-sm-4 col-sm-push-8 float-left">
-            <div id="file" class="card">
-                <h3>
-                    Download Files
-                </h3>
+            <div id="router-file-list" class="card">
+                <h3> Download Files </h3>
                 <!-- <div class="list-group">
                     {{ range $i, $v := .Files }}
                     <div class="file-group list-group-item list-group-item-action">
@@ -173,6 +171,13 @@
                     <td> Version </td>
                     <td>
                         <input id="version" class="tm-check" type="text" name="version" text="" />
+                    </td>
+                </tr>
+                <tr scope="row">
+                    <th> 4</th>
+                    <td> Router Group</td>
+                    <td>
+                        <input id="router-group" class="tm-check" type="text" name="router-group" text="" />
                     </td>
                 </tr>
                 <tr scope="row">

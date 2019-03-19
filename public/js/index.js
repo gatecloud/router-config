@@ -92,7 +92,7 @@ function Load() {
         $.each(data, function (index, element) {
             $template = '<div class="template-group list-group-item list-group-item-action">' +
                 '<input type="checkbox" aria-label="Checkbox for following text input">' +
-                '<a href= ' + element.URL + '> ' + element.TemplateName + '</a>' +
+                '<a href= ' + element.URL + '> ' + element.ProjectName+'/'+element.TemplateName + '</a>' +
                 '</div>'
             $(".template-list").append($template);
         })
