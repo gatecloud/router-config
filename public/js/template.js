@@ -90,7 +90,7 @@ $(function () {
         }
         // Post
         $.post(domain + "/Templates", template, function (result) {
-            locaton.reload(true);
+            // locaton.reload(true);
         })
     })
 

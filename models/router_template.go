@@ -1,9 +1,8 @@
 package models
 
-import "fmt"
-
 type CustomConfig map[string]interface{}
 
+// RouterTemplate is the template of the router in a same group
 type RouterTemplate struct {
 	Resources     []string
 	Methods       []string
@@ -23,7 +22,6 @@ func (rt *RouterTemplate) GenerateRouters() []Router {
 	var (
 		routers []Router
 	)
-	fmt.Println(rt.Methods)
 	for _, resource := range rt.Resources {
 		for _, method := range rt.Methods {
 			path := ""

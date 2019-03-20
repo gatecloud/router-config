@@ -1,10 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
-	"router-config/configs"
 	"router-config/models"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +25,6 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 	}
 
 	if err := ctrl.Validator.Struct(entity); err != nil {
-		fmt.Println(err)
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
 	}
@@ -36,31 +34,6 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 		Find(&chkTemplate).
 		RecordNotFound() {
 		err := fmt.Errorf("%s/%s is existed", entity.ProjectName, entity.TemplateName)
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
-	routerTemplate, err := entity.Convert2RouterTemplate()
-	if err != nil {
-		fmt.Println(err)
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
-	routers := routerTemplate.GenerateRouters()
-	body, err := json.MarshalIndent(routers, "", "\t")
-	if err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
-	uploader, err := ctrl.CreateAWSUploader()
-	if err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
-	if err := entity.UploadFile(uploader, configs.Configuration.AWSS3Domain, body); err != nil {
 		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
 		return
 	}
@@ -77,17 +50,23 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 
 func (ctrl *TemplateController) GetByID(ctx *gin.Context) {
 	var (
-		entities []models.Project
+		chkEntity models.Template
 	)
 
-	if err := ctrl.DB.Find(&entities).Error; err != nil {
-		// if ctrl.DB.Find(&entities).RecordNotFound() {
-		ctx.JSON(http.StatusNoContent, nil)
+	name := ctx.Params.ByName("id")
+	if name == "" {
+		err := errors.New("id is required")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
 	}
-	fmt.Println("---", entities)
 
-	ctx.JSON(http.StatusOK, entities)
+	if ctrl.DB.Where("id = ?", name).Find(&chkEntity).RecordNotFound() {
+		err := errors.New("template not found")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, chkEntity)
 	return
 }
 

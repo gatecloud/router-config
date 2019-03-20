@@ -1,13 +1,8 @@
 package models
 
 import (
-	"bytes"
 	"encoding/json"
-	"regexp"
 	"strings"
-
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
 type Template struct {
@@ -23,23 +18,6 @@ type Template struct {
 	RouterGroup  string `validate:"required"`
 	TemplateName string `validate:"required"`
 	URL          string
-}
-
-func (t *Template) UploadFile(uploader *s3manager.Uploader, domain string, b []byte) error {
-	name := t.ProjectName + "-" + t.RouterGroup + "-" + t.TemplateName + ".json"
-	bucket := regexp.MustCompile("/{1}[a-zA-Z0-9-]+/{1}").
-		FindString(domain)
-	result, err := uploader.Upload(
-		&s3manager.UploadInput{
-			Bucket: aws.String(bucket[1:len(bucket)]),
-			Key:    aws.String(name),
-			Body:   bytes.NewReader(b),
-		})
-	if err != nil {
-		return err
-	}
-	t.URL = result.Location
-	return nil
 }
 
 func (t *Template) Convert2RouterTemplate() (RouterTemplate, error) {

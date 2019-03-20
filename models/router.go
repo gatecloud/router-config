@@ -1,6 +1,6 @@
 package models
 
-// Router is server configuration structure
+// Router is the unit model of json file
 type Router struct {
 	Method        string
 	Path          string

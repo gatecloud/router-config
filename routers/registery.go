@@ -25,5 +25,10 @@ func init() {
 			Controller: reflect.TypeOf(controllers.TemplateController{}),
 			Model:      &models.Template{},
 		},
+		libRoute.Route{
+			Name:       "Files",
+			Controller: reflect.TypeOf(controllers.FileController{}),
+			Model:      &models.File{},
+		},
 	}
 }
