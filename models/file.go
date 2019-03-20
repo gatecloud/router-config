@@ -5,6 +5,8 @@ import (
 	"regexp"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
@@ -16,10 +18,11 @@ type File struct {
 	URL       string
 }
 
-func (f *File) UploadFile(uploader *s3manager.Uploader, domain string, b []byte) error {
+func (f *File) UploadFile(sess *session.Session, domain string, b []byte) error {
 	name := f.Name + ".json"
 	bucket := regexp.MustCompile("/{1}[a-zA-Z0-9-]+/{1}").
 		FindString(domain)
+	uploader := s3manager.NewUploader(sess)
 	result, err := uploader.Upload(
 		&s3manager.UploadInput{
 			Bucket: aws.String(bucket[1:len(bucket)]),
@@ -30,5 +33,20 @@ func (f *File) UploadFile(uploader *s3manager.Uploader, domain string, b []byte)
 		return err
 	}
 	f.URL = result.Location
+	return nil
+}
+
+func (f *File) DeleteFile(sess *session.Session, domain string) error {
+	key := f.Name + ".json"
+	bucket := regexp.MustCompile("/{1}[a-zA-Z0-9-]+/{1}").FindString(domain)
+	input := &s3.DeleteObjectInput{
+		Bucket: aws.String(bucket[1:len(bucket)]),
+		Key:    aws.String(key),
+	}
+	svc := s3.New(sess)
+	_, err := svc.DeleteObject(input)
+	if err != nil {
+		return err
+	}
 	return nil
 }
