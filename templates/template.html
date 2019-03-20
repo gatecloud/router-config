@@ -111,22 +111,26 @@
             </tbody>
         </table>
         <div>
-            <div class="input-group col-sm-6 float-left">
-                <div class="input-group-prepend col-sm-3">
+            <div class="input-group">
+                <div class="input-group-prepend col-sm-2">
                     <label class="input-group-text" for="project-dropdown">Choose Project</label>
                 </div>
                 <select id="project-dropdown" class="custom-select mr-2 p-10">
                     <option selected>---</option>
                 </select>
-                <select id="router-dropdown" class="custom-select p-10">
+                <select id="router-dropdown" class="custom-select mr-2 p-10">
                     <option selected>---</option>
                 </select>
+                <a href="http://localhost:7000/project" class="w-10 ml-2">New Project?</a>
+                <div class="input-group-prepend col-sm-2">
+                    <label class="input-group-text">Template Name</label>
+                </div>
+                <input id="text-template" type="text" name="filename" />
             </div>
-
-            Template Name: <input id="text-template" type="text" name="filename" />
         </div>
         <button id="btn-clear" type="button" class="btn btn-danger">Empty</button>
         <input id="btn-create-template" type="button" class="btn btn-primary" value="Create Template" />
+        <a href="http://localhost:7000/home" class="btn btn-dark">Return to Home</a>
     </div>
 </body>
 

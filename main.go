@@ -49,26 +49,6 @@ func main() {
 	}
 	apiRouter := r.Group("/api")
 	libRoute.DistributeRouters(apiRouter, routers.RouteMap["api"], sr)
-
-	r.GET("/index", func(ctx *gin.Context) {
-		// files, err := logic.ToList("files/")
-		// if err != nil {
-		// 	RedirectError(ctx, http.StatusInternalServerError, err)
-		// 	return
-		// }
-
-		// groups, err := logic.ToList("groups/")
-		// if err != nil {
-		// 	RedirectError(ctx, http.StatusInternalServerError, err)
-		// 	return
-		// }
-
-		ctx.HTML(http.StatusOK, "index.html", gin.H{
-		// "Groups": groups,
-		// "Files":  files,
-		})
-	})
-
 	r.GET("/home", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "home.html", nil)
 	})
@@ -76,9 +56,11 @@ func main() {
 	r.GET("/project", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "project.html", nil)
 	})
+
 	r.GET("/template", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "template.html", nil)
 	})
+
 	r.POST("/AddTemplate", func(ctx *gin.Context) {
 		r := logic.RouterTemplate{}
 		resources := ctx.PostForm("resource")

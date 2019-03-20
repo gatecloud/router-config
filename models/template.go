@@ -32,6 +32,7 @@ func (t *Template) Convert2RouterTemplate() (RouterTemplate, error) {
 		ProxyPass:     t.ProxyPass,
 		ProxyVersion:  t.ProxyVersion,
 		CustomeConfig: customConfig,
+		RouterGroup:   t.RouterGroup,
 	}, nil
 }
 

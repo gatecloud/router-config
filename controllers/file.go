@@ -26,7 +26,6 @@ func (ctrl *FileController) Post(ctx *gin.Context) {
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
 	}
-	fmt.Println("---", entity)
 
 	if err := ctrl.Validator.Struct(entity); err != nil {
 		fmt.Println(err)

@@ -24,19 +24,27 @@ func (rt *RouterTemplate) GenerateRouters() []Router {
 	)
 	for _, resource := range rt.Resources {
 		for _, method := range rt.Methods {
-			path := ""
+			var (
+				path, proxyPassPath string
+			)
 			if rt.Version != "" {
-				path = PATH_SEPARATOR + rt.Version + PATH_SEPARATOR + rt.RouterGroup + PATH_SEPARATOR + resource
-			} else {
-				path = PATH_SEPARATOR + rt.RouterGroup + PATH_SEPARATOR + resource
+				path = PATH_SEPARATOR + rt.Version
 			}
+
+			if rt.RouterGroup != "" {
+				path += PATH_SEPARATOR + rt.RouterGroup
+				proxyPassPath += PATH_SEPARATOR + rt.RouterGroup
+			}
+
+			proxyPassPath += PATH_SEPARATOR + resource
+			path += PATH_SEPARATOR + resource
 
 			routers = append(routers, Router{
 				Method:        method,
 				Path:          path,
 				ProxyScheme:   rt.ProxySchema,
 				ProxyPass:     rt.ProxyPass,
-				ProxyPassPath: PATH_SEPARATOR + resource,
+				ProxyPassPath: proxyPassPath,
 				APIVersion:    rt.ProxyVersion,
 				CustomConfigs: rt.CustomeConfig,
 			})
