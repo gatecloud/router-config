@@ -17,7 +17,6 @@ type Template struct {
 	ProjectName  string `validate:"required"`
 	RouterGroup  string `validate:"required"`
 	TemplateName string `validate:"required"`
-	URL          string
 }
 
 func (t *Template) Convert2RouterTemplate() (RouterTemplate, error) {
