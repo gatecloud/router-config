@@ -30,7 +30,7 @@ $(function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function () {
-                alert("good")
+                Load();
             }
         })
     })
@@ -50,6 +50,26 @@ $(function () {
                 console.log(error);
             }
         });
+    })
+
+    // Preview the merged file
+    $("tbody").on("click", ".btn-preview", function () {
+        id = $(this).prev().attr("value");
+        $(".textarea-preview").empty();
+        $.get(domain + "/Files/"+id,function(data, status){
+            console.log(data.Preview);
+            $(".textarea-preview").append(data.Preview)
+        })
+    })
+
+    // Download the merged file
+    $("tbody").on("click", ".btn-download", function () {
+        url = $(this).prev().attr("value");
+        $("#div-preview").append(
+            `<object  data="` + url + ` " width="300" height="200">
+                Not supported
+            </object>`
+        )
     })
 })
 

@@ -139,16 +139,54 @@ func (ctrl *FileController) Delete(ctx *gin.Context) {
 
 func (ctrl *FileController) GetByID(ctx *gin.Context) {
 	var (
-		entities []models.File
+		chkEntity models.File
+		routers   []models.Router
 	)
 
-	if err := ctrl.DB.Find(&entities).Error; err != nil {
-		// if ctrl.DB.Find(&entities).RecordNotFound() {
-		ctx.JSON(http.StatusNoContent, nil)
+	idStr := ctx.Params.ByName("id")
+	if idStr == "" {
+		err := errors.New("name is required")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, entities)
+	if ctrl.DB.Where("id = ?", idStr).
+		Preload("Templates").
+		Find(&chkEntity).RecordNotFound() {
+		err := errors.New("file not found")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	for _, v := range chkEntity.Templates {
+		routerTemplate, err := v.Convert2RouterTemplate()
+		if err != nil {
+			ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+			return
+		}
+		routers = append(routers, routerTemplate.GenerateRouters()...)
+	}
+
+	body, err := json.MarshalIndent(routers, "", "\t")
+	if err != nil {
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	fmt.Println(string(body))
+	chkEntity.Preview = string(body)
+	// sess, err := ctrl.CreateAWSSession()
+	// if err != nil {
+	// 	ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+	// 	return
+	// }
+
+	// if err := chkEntity.GetFileContent(sess, configs.Configuration.AWSS3Domain); err != nil {
+	// 	fmt.Println(err)
+	// 	ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+	// 	return
+	// }
+	ctx.JSON(http.StatusOK, chkEntity)
 	return
 }
 
