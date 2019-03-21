@@ -1,15 +1,11 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"router-config/configs"
-	"router-config/logic"
 	"router-config/routers"
 	"router-config/validations"
-	"strings"
-	"time"
 
 	libRoute "github.com/gatecloud/webservice-library/route"
 	"github.com/gin-gonic/gin"
@@ -59,74 +55,6 @@ func main() {
 
 	r.GET("/template", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "template.html", nil)
-	})
-
-	r.POST("/AddTemplate", func(ctx *gin.Context) {
-		r := logic.RouterTemplate{}
-		resources := ctx.PostForm("resource")
-		methods := ctx.PostForm("method")
-		version := ctx.PostForm("version")
-		proxySchema := ctx.PostForm("proxy_schema")
-		proxyPass := ctx.PostForm("proxy_pass")
-		proxyVersion := ctx.PostForm("proxy_version")
-		customConfig := ctx.PostForm("custom_config")
-		if err := r.Parse(resources, methods, version, proxySchema, proxyPass, proxyVersion, customConfig); err != nil {
-			RedirectError(ctx, http.StatusInternalServerError, err)
-			return
-		}
-		if err := r.Save(ctx.PostForm("filename")); err != nil {
-			RedirectError(ctx, http.StatusInternalServerError, err)
-			return
-		}
-		ctx.Redirect(http.StatusMovedPermanently, "/index")
-	})
-
-	r.GET("/GetTemplate/:filename", func(ctx *gin.Context) {
-		routerTemplate := logic.RouterTemplate{}
-		filename := strings.TrimSpace(ctx.Param("filename"))
-		err := routerTemplate.Load(filename)
-		if err != nil {
-			RedirectError(ctx, http.StatusInternalServerError, err)
-			return
-		}
-
-		customConfigs, err := json.MarshalIndent(routerTemplate.CustomConfigs, "", "\t")
-		if err != nil {
-			RedirectError(ctx, http.StatusInternalServerError, err)
-			return
-		}
-
-		ctx.JSON(http.StatusOK, gin.H{
-			"resources":     routerTemplate.Resources,
-			"methods":       routerTemplate.Methods,
-			"version":       routerTemplate.Version,
-			"proxyschema":   routerTemplate.ProxySchema,
-			"proxypass":     routerTemplate.ProxyPass,
-			"proxyversion":  routerTemplate.ProxyVersion,
-			"customconfigs": string(customConfigs),
-		})
-	})
-
-	r.POST("/Export", func(ctx *gin.Context) {
-		fileContent := ctx.PostForm("content")
-		fileList := strings.Split(fileContent, ";")
-		filename := ctx.PostForm("filename")
-		if err := logic.Export(filename, fileList); err != nil {
-			RedirectError(ctx, http.StatusInternalServerError, err)
-			return
-		}
-		ctx.Redirect(http.StatusMovedPermanently, "/index")
-	})
-
-	r.POST("/DeleteGroup", func(ctx *gin.Context) {
-		fileContent := ctx.PostForm("content")
-		fileList := strings.Split(fileContent, ";")
-		if err := logic.DeleteGroup(fileList); err != nil {
-			RedirectError(ctx, http.StatusInternalServerError, err)
-			return
-		}
-		time.Sleep(1 * time.Second)
-		ctx.Redirect(http.StatusMovedPermanently, "/index")
 	})
 
 	r.Run(configs.Configuration.Port)

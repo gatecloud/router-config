@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
@@ -61,7 +60,7 @@ func (ctrl *Control) Delete(ctx *gin.Context) {
 	return
 }
 
-func (ctrl *Control) CreateAWSUploader() (*s3manager.Uploader, error) {
+func (ctrl *Control) CreateAWSSession() (*session.Session, error) {
 	var err error
 	creds := credentials.NewStaticCredentials(configs.Configuration.AWSS3Key,
 		configs.Configuration.AWSS3Secret,
@@ -73,12 +72,8 @@ func (ctrl *Control) CreateAWSUploader() (*s3manager.Uploader, error) {
 	config := aws.NewConfig().
 		WithRegion(configs.Configuration.AWSS3Region).
 		WithCredentials(creds)
-	awsSession, err := session.NewSession(config)
-	if err != nil {
-		return nil, err
-	}
 
-	return s3manager.NewUploader(awsSession), nil
+	return session.NewSession(config)
 }
 
 // RedirectError redirects to the error page
