@@ -35,6 +35,23 @@ $(function () {
         })
     })
 
+    // Delete template file
+    $("tbody").on("click", ".btn-delete-template", function () {
+        id = $(this).next().attr("value");
+        $.ajax({
+            url: domain + "/Templates/" + id,
+            type: 'DELETE',
+            success: function (result) {
+                Load();
+            },
+            error: function (request, msg, error) {
+                console.log(request);
+                console.log(msg);
+                console.log(error);
+            }
+        });
+    })
+
     // Delete downloaded file 
     $("tbody").on("click", ".btn-delete", function () {
         id = $(this).next().attr("value");
@@ -88,7 +105,10 @@ function Load() {
                     <td>`+ element.ProjectName + `</td>
                     <td>`+ element.RouterGroup + `</td>
                     <td>`+ element.TemplateName + `</td>
-                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-delete-template">Delete</button>
+                        <hidden value=`+ element.ID + `></hidden>
+                    </td>
                 </tr>`
             $("#tbl-template tbody").append($tr);
         })

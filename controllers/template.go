@@ -48,6 +48,33 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 	return
 }
 
+func (ctrl *TemplateController) Delete(ctx *gin.Context) {
+	var (
+		chkEntity models.Template
+	)
+
+	idStr := ctx.Params.ByName("id")
+	if idStr == "" {
+		err := errors.New("id is required")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	if ctrl.DB.Where("id = ?", idStr).Find(&chkEntity).RecordNotFound() {
+		err := errors.New("template not found")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	if err := ctrl.DB.Unscoped().Delete(&chkEntity).Error; err != nil {
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, chkEntity)
+	return
+}
+
 func (ctrl *TemplateController) GetByID(ctx *gin.Context) {
 	var (
 		chkEntity models.Template
