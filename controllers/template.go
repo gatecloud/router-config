@@ -48,6 +48,53 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 	return
 }
 
+func (ctrl *TemplateController) Patch(ctx *gin.Context) {
+	var (
+		entity      models.Template
+		chkTemplate models.Template
+	)
+
+	if err := ctx.Bind(&entity); err != nil {
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	if err := ctrl.Validator.Struct(entity); err != nil {
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	tx := ctrl.DB.Begin()
+	if tx.Where("id = ?", entity.ID).Find(&chkTemplate).RecordNotFound() {
+		tx.Rollback()
+		err := errors.New("template not found")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	chkTemplate.Resource = entity.Resource
+	chkTemplate.Method = entity.Method
+	chkTemplate.ProxySchema = entity.ProxySchema
+	chkTemplate.ProxyPass = entity.ProxyPass
+	chkTemplate.ProxyVersion = entity.ProxyVersion
+	chkTemplate.TemplateName = entity.TemplateName
+	chkTemplate.ProjectName = entity.ProjectName
+	chkTemplate.RouterGroup = entity.RouterGroup
+	chkTemplate.Version = entity.Version
+	chkTemplate.CustomConfig = entity.CustomConfig
+
+	entity.DeletedAt = nil
+	if err := tx.Save(&entity).Error; err != nil {
+		tx.Rollback()
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	tx.Commit()
+	ctx.JSON(http.StatusOK, chkTemplate)
+	return
+}
+
 func (ctrl *TemplateController) Delete(ctx *gin.Context) {
 	var (
 		chkEntity models.Template
@@ -80,14 +127,14 @@ func (ctrl *TemplateController) GetByID(ctx *gin.Context) {
 		chkEntity models.Template
 	)
 
-	name := ctx.Params.ByName("id")
-	if name == "" {
+	idStr := ctx.Params.ByName("id")
+	if idStr == "" {
 		err := errors.New("id is required")
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	if ctrl.DB.Where("id = ?", name).Find(&chkEntity).RecordNotFound() {
+	if ctrl.DB.Where("id = ?", idStr).Find(&chkEntity).RecordNotFound() {
 		err := errors.New("template not found")
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return

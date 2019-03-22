@@ -52,6 +52,12 @@ $(function () {
         });
     })
 
+    // Edit template file
+    $("tbody").on("click", ".btn-edit", function () {
+        id = $(this).prev().attr("value");
+        $(location).attr("href", "http://localhost:7000/template?id="+id);
+    })
+
     // Delete downloaded file 
     $("tbody").on("click", ".btn-delete", function () {
         id = $(this).next().attr("value");
@@ -108,6 +114,7 @@ function Load() {
                     <td>
                         <button type="button" class="btn btn-danger btn-delete-template">Delete</button>
                         <hidden value=`+ element.ID + `></hidden>
+                        <button type="button" class="btn btn-danger btn-edit">Edit</button>
                     </td>
                 </tr>`
             $("#tbl-template tbody").append($tr);

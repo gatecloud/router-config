@@ -38,7 +38,7 @@
                     <td>Method</td>
                     <td>
                         <div class="form-check form-check-inline col-sm-2">
-                            <input class="form-check-input" type="checkbox" id="chk-method-patch" value="POST">
+                            <input class="form-check-input" type="checkbox" id="chk-method-post" value="POST">
                             <label for="chk-method-post">POST</label>
                         </div>
                         <div class="form-check form-check-inline col-sm-2">
@@ -76,8 +76,8 @@
                     </td>
                     <td>
                         <select id="proxy-schema-dropdown" class="custom-select p-10">
-                            <option selected>http</option>
-                            <option>https</option>
+                            <option selected value="http">http</option>
+                            <option value="https">https</option>
                         </select>
                     </td>
                 </tr>
@@ -85,14 +85,14 @@
                     <th> 5</th>
                     <td> Proxy Pass </td>
                     <td>
-                        <input id="proxyPass" class="tm-check" type="text" name="proxy_pass" text="" />
+                        <input id="proxy-pass" class="tm-check" type="text" name="proxy_pass" text="" />
                     </td>
                 </tr>
                 <tr scope="row">
                     <th> 6</th>
                     <td> Proxy Version </td>
                     <td>
-                        <input id="proxyVersion" class="tm-check" type="text" name="proxy_version" text="" />
+                        <input id="proxy-version" class="tm-check" type="text" name="proxy_version" text="" />
                     </td>
                 </tr>
                 <tr scope="row">
@@ -130,6 +130,7 @@
         </div>
         <button id="btn-clear" type="button" class="btn btn-danger">Empty</button>
         <input id="btn-create-template" type="button" class="btn btn-primary" value="Create Template" />
+        <input id="btn-edit-template" type="button" class="btn btn-primary" value="Edit Template" />
         <a href="http://localhost:7000/home" class="btn btn-dark">Return to Home</a>
     </div>
 </body>
