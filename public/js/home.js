@@ -55,7 +55,7 @@ $(function () {
     // Edit template file
     $("tbody").on("click", ".btn-edit", function () {
         id = $(this).prev().attr("value");
-        $(location).attr("href", "http://localhost:7000/template?id="+id);
+        $(location).attr("href", "http://localhost:7000/template?id=" + id);
     })
 
     // Delete downloaded file 
@@ -79,20 +79,10 @@ $(function () {
     $("tbody").on("click", ".btn-preview", function () {
         id = $(this).prev().attr("value");
         $(".textarea-preview").empty();
-        $.get(domain + "/Files/"+id,function(data, status){
+        $.get(domain + "/Files/" + id, function (data, status) {
             console.log(data.Preview);
             $(".textarea-preview").append(data.Preview)
         })
-    })
-
-    // Download the merged file
-    $("tbody").on("click", ".btn-download", function () {
-        url = $(this).prev().attr("value");
-        $("#div-preview").append(
-            `<object  data="` + url + ` " width="300" height="200">
-                Not supported
-            </object>`
-        )
     })
 })
 
@@ -129,7 +119,7 @@ function Load() {
                         <hidden value=`+ element.ID + `></hidden>
                         <button type="button" class="btn btn-info btn-preview">Preview</button>
                         <hidden value=`+ element.URL + `></hidden>
-                        <button type="button" class="btn btn-dark btn-download">Download</button>
+                        <a href="`+ element.URL + `" class="btn btn-dark btn-download" >Download</a>
                     </td>
                 </tr>`
             $("#tbl-file tbody").append($tr);

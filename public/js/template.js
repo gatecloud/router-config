@@ -76,7 +76,7 @@ $(function () {
         })
 
         if ($("#chk-method-any").attr("checked") == "checked") {
-            method = "POST,PATCH,DELETE,GET,OPTIONS,"
+            methods = "POST,PATCH,DELETE,GET,OPTIONS,"
         }
 
         methods = methods.slice(0, methods.length - 1);
@@ -99,7 +99,7 @@ $(function () {
         })
     })
 
-
+    // Edit the template
     $("#btn-edit-template").click(function () {
         var resources = ""
         $(".resource-label").each(function (index) {
@@ -120,11 +120,10 @@ $(function () {
         })
 
         if ($("#chk-method-any").attr("checked") == "checked") {
-            method = "POST,PATCH,DELETE,GET,OPTIONS,"
+            methods = "POST,PATCH,DELETE,GET,OPTIONS,"
         }
 
         methods = methods.slice(0, methods.length - 1);
-
         url = $(location).attr("href");
         params = url.split("?")[1];
         id = params.split("=")[1];
@@ -223,8 +222,7 @@ function Load() {
             });
 
             $("#version").val(data.Version);
-            // $("#proxy-schema-dropdown option[value=" + data.ProxySchema + "]").prop("selected", true);
-            $("#proxy-schema-dropdown option[value=https]").prop("selected", true);
+            $("#proxy-schema-dropdown option[value=" + data.ProxySchema + "]").prop("selected", true);
             $("#proxy-pass").val(data.ProxyPass);
             $("#proxy-version").val(data.ProxyVersion);
             $("#custom-config-textarea").val(data.CustomConfig);
@@ -236,8 +234,9 @@ function Load() {
                     $option = '<option value=' + element + '>' + element + '</option>';
                     $("#router-dropdown").append($option);
                 })
+            }).done(function(){
+                $("#router-dropdown option[value=" + data.RouterGroup + "]").prop("selected", true);
             })
-            $("#router-dropdown option[value=" + data.RouterGroup + "]").prop("selected", true);
             $("#text-template").val(data.TemplateName);
         })
     }
