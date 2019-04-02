@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"router-config/models"
 
+	"github.com/satori/go.uuid"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -104,10 +106,21 @@ func (ctrl *ProjectController) GetByID(ctx *gin.Context) {
 		chkEntity models.Project
 	)
 
-	id := ctx.Params.ByName("id")
-	if id == "" {
+	idStr := ctx.Params.ByName("id")
+	if idStr == "" {
 		err := errors.New("id is required")
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	id, err := uuid.FromString(idStr)
+	if err != nil {
+		if ctrl.DB.Where("name = ?", idStr).Find(&chkEntity).RecordNotFound() {
+			err := errors.New("project not found")
+			ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+			return
+		}
+		ctx.JSON(http.StatusOK, chkEntity)
 		return
 	}
 
