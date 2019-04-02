@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"router-config/models"
 
@@ -38,6 +37,41 @@ func (ctrl *ProjectController) Post(ctx *gin.Context) {
 	return
 }
 
+func (ctrl *ProjectController) Patch(ctx *gin.Context) {
+	var (
+		entity     models.Project
+		chkProject models.Project
+	)
+
+	if err := ctx.Bind(&entity); err != nil {
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	if err := ctrl.Validator.Struct(entity); err != nil {
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	if ctrl.DB.Where("id = ?", entity.ID).Find(&chkProject).RecordNotFound() {
+		err := errors.New("proejct not found")
+		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	if entity.RouterGroups != "" {
+		chkProject.RouterGroups = entity.RouterGroups
+	}
+
+	if err := ctrl.DB.Save(&chkProject).Error; err != nil {
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, chkProject)
+	return
+}
+
 func (ctrl *ProjectController) Delete(ctx *gin.Context) {
 	var (
 		chkEntity models.Project
@@ -70,14 +104,14 @@ func (ctrl *ProjectController) GetByID(ctx *gin.Context) {
 		chkEntity models.Project
 	)
 
-	name := ctx.Params.ByName("id")
-	if name == "" {
-		err := errors.New("name is required")
+	id := ctx.Params.ByName("id")
+	if id == "" {
+		err := errors.New("id is required")
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	if ctrl.DB.Where("name = ?", name).Find(&chkEntity).RecordNotFound() {
+	if ctrl.DB.Where("id = ?", id).Find(&chkEntity).RecordNotFound() {
 		err := errors.New("project not found")
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
@@ -97,7 +131,6 @@ func (ctrl *ProjectController) GetAll(ctx *gin.Context) {
 		ctx.JSON(http.StatusNoContent, nil)
 		return
 	}
-	fmt.Println("---", entities)
 
 	ctx.JSON(http.StatusOK, entities)
 	return
