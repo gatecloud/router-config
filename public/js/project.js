@@ -66,7 +66,7 @@ $(function () {
         $(".router-label").each(function (index) {
             tags += $(this).html() + ",";
         })
-        
+
         id = $("input:checkbox:checked").next().attr("value");
         var project = {
             ID: id,
@@ -108,7 +108,7 @@ $(function () {
 
 function Load() {
     $.get(domain + "/Projects", function (data, status) {
-        $("tr").remove();
+        $("table > tbody").children().remove();
         $.each(data, function (index, element) {
             $tr = `<tr>
                     <td scope="row">

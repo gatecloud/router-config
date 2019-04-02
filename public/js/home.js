@@ -88,7 +88,7 @@ $(function () {
 
 
 function Load() {
-    $("tr").remove();
+    $("table > tbody").children().remove();
     $.get(domain + "/Templates", function (data, status) {
         $.each(data, function (index, element) {
             $tr = `<tr>
