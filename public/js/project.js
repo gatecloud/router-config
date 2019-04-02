@@ -24,6 +24,27 @@ $(function () {
         $("#div-router-group").remove();
     })
 
+    // Checkbox event
+    $("td").on("click", "input:checkbox", function () {
+        if ($(this).is(":checked")) {
+            id = $(this).next().attr("value");
+            console.log(id);
+            $.get(domain + "/Projects/" + id, function (data, status) {
+                $("#input-project").val(data.Name);
+                tags = data.RouterGroups.split(",");
+                $.each(tags, function (index, element) {
+                    $label = '<span class="router-label mr-2 badge badge-success">' + element + '</span>';
+                    $("#div-router-group").append($label);
+                })
+            });
+
+        } else {
+            $("#input-project").val("");
+            $("tr").remove();
+        }
+    })
+
+
     // Post project 
     $("#btn-create-project").click(function () {
         var tags = "";
@@ -39,8 +60,37 @@ $(function () {
         })
     })
 
+    // Edit project 
+    $("#btn-edit-project").click(function () {
+        var tags = "";
+        $(".router-label").each(function (index) {
+            tags += $(this).html() + ",";
+        })
+
+        id = $("input:checkbox:checked").next().attr("value");
+        var project = {
+            ID: id,
+            Name: $("#input-project").val(),
+            RouterGroups: tags.slice(0, tags.length - 1)
+        }
+        // Patch
+        $.ajax({
+            url: domain + "/Projects",
+            type: 'PATCH',
+            data: JSON.stringify(project),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                Load();
+            },
+            error: function (request, msg, error) {
+                alert(error);
+            }
+        })
+    })
+
     // Delete Project
-    $("tbody").on("click", ".btn-delete", function(){
+    $("tbody").on("click", ".btn-delete", function () {
         id = $(this).next().attr("value");
         $.ajax({
             url: domain + "/Projects/" + id,
@@ -58,14 +108,15 @@ $(function () {
 
 function Load() {
     $.get(domain + "/Projects", function (data, status) {
-        $("tr").remove();
+        $("table > tbody").children().remove();
         $.each(data, function (index, element) {
             $tr = `<tr>
-                    <th scope="row">
+                    <td scope="row">
                         <div class="form-check form-check-inline col-sm-2">
-                            <input class="form-check-input" type="checkbox" >
+                            <input class="form-check-input" type="checkbox">
+                            <hidden value=`+ element.ID + `></hidden>
                         </div>
-                    </th>
+                    </td>
                     <td>`+ element.Name + `</td>
                     <td>`+ element.RouterGroups + `</td>
                     <td>

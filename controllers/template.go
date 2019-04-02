@@ -149,7 +149,7 @@ func (ctrl *TemplateController) GetAll(ctx *gin.Context) {
 		entities []models.Template
 	)
 
-	if ctrl.DB.Find(&entities).RecordNotFound() {
+	if ctrl.DB.Order("template_name asc").Find(&entities).RecordNotFound() {
 		ctx.JSON(http.StatusNoContent, nil)
 		return
 	}

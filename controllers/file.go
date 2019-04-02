@@ -173,7 +173,6 @@ func (ctrl *FileController) GetByID(ctx *gin.Context) {
 		return
 	}
 
-	fmt.Println(string(body))
 	chkEntity.Preview = string(body)
 	// sess, err := ctrl.CreateAWSSession()
 	// if err != nil {
