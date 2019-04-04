@@ -2,7 +2,7 @@ package models
 
 import (
 	"bytes"
-	"encoding/json"
+	"fmt"
 	"regexp"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	FILE_SIZE int = 2048
+	FILE_SIZE int = 1024
 )
 
 // File
@@ -36,6 +36,7 @@ func (f *File) UploadFile(sess *session.Session, domain string, b []byte) error 
 		Metadata: map[string]*string{
 			"metadata1": aws.String("text/plain"),
 			"metadata2": aws.String("application/json"),
+			"metadata3": aws.String("binary/octet-stream"),
 		},
 	}
 
@@ -75,17 +76,21 @@ func (f *File) GetFileContent(sess *session.Session, domain string) error {
 		return err
 	}
 
-	b := make([]byte, FILE_SIZE, FILE_SIZE)
-	_, err = result.Body.Read(b)
-	if err != nil {
+	b := make([]byte, FILE_SIZE)
+	total := 0
+READ:
+	n, err := result.Body.Read(b)
+	if err != nil && n < 0 {
+		fmt.Println(n)
+		fmt.Println(err)
 		return err
 	}
 
-	body, err := json.MarshalIndent(b, "", "\t")
-	if err != nil {
-		return err
+	total += n
+	if total < int(*result.ContentLength) {
+		f.Preview += string(b)
+		goto READ
 	}
 
-	f.Preview = string(body)
 	return nil
 }
