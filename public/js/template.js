@@ -150,11 +150,12 @@ $(function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
+                $("#div-resource").children().remove();
                 Load();
             },
             error: function (request, msg, error) {
                 data = request.responseJSON;
-                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
+                window.location.href = "http://localhost:7000/error?Error=" + data.Error + "&StatusCode=" + data.StatusCode;
             }
         });
     })
@@ -169,7 +170,7 @@ $(function () {
             },
             error: function (request, msg, error) {
                 data = request.responseJSON;
-                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
+                window.location.href = "http://localhost:7000/error?Error=" + data.Error + "&StatusCode=" + data.StatusCode;
             }
         });
     })
@@ -236,7 +237,7 @@ function Load() {
                     $option = '<option value=' + element + '>' + element + '</option>';
                     $("#router-dropdown").append($option);
                 })
-            }).done(function(){
+            }).done(function () {
                 $("#router-dropdown option[value=" + data.RouterGroup + "]").prop("selected", true);
             })
             $("#text-template").val(data.TemplateName);
