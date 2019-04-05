@@ -34,14 +34,6 @@ func (ctrl *FileController) Post(ctx *gin.Context) {
 		return
 	}
 
-	if !ctrl.DB.Where("name = ?", entity.Name).
-		Find(&chkFile).
-		RecordNotFound() {
-		err := fmt.Errorf("%s is existed", entity.Name)
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
 	for i, v := range entity.Templates {
 		var chkTemplate models.Template
 		if ctrl.DB.Where("id = ?", v.ID).Find(&chkTemplate).RecordNotFound() {
@@ -65,7 +57,6 @@ func (ctrl *FileController) Post(ctx *gin.Context) {
 		return
 	}
 
-	fmt.Println("======", string(body))
 	sess, err := ctrl.CreateAWSSession()
 	if err != nil {
 		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
@@ -78,9 +69,14 @@ func (ctrl *FileController) Post(ctx *gin.Context) {
 	}
 
 	entity.DeletedAt = nil
-	if err := ctrl.DB.Create(&entity).Error; err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
+
+	if ctrl.DB.Where("name = ?", entity.Name).
+		Find(&chkFile).
+		RecordNotFound() {
+		if err := ctrl.DB.Create(&entity).Error; err != nil {
+			ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+			return
+		}
 	}
 
 	ctx.JSON(http.StatusOK, entity)

@@ -153,7 +153,8 @@ $(function () {
                 Load();
             },
             error: function (request, msg, error) {
-                alert(error);
+                data = request.responseJSON;
+                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
             }
         });
     })
@@ -167,7 +168,8 @@ $(function () {
                 Load();
             },
             error: function (request, msg, error) {
-                alert(error);
+                data = request.responseJSON;
+                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
             }
         });
     })

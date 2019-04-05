@@ -33,10 +33,6 @@ $(function () {
                 Load();
             },
             error: function (request, msg, error) {
-                console.log(request);
-                console.log(msg);
-                console.log(error);
-                // window.location.href= "http://localhost:7000/error";
                 data = request.responseJSON;
                 window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
             }
@@ -54,9 +50,8 @@ $(function () {
                 Load();
             },
             error: function (request, msg, error) {
-                console.log(request);
-                console.log(msg);
-                console.log(error);
+                data = request.responseJSON;
+                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
             }
         });
     })
@@ -77,9 +72,8 @@ $(function () {
                 Load();
             },
             error: function (request, msg, error) {
-                console.log(request);
-                console.log(msg);
-                console.log(error);
+                data = request.responseJSON;
+                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
             }
         });
     })
@@ -92,6 +86,7 @@ $(function () {
             console.log(data.Preview);
             $(".textarea-preview").append(data.Preview)
         });
+        
     })
 })
 
