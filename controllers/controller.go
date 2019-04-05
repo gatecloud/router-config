@@ -21,6 +21,7 @@ type Controller interface {
 	GetAll(ctx *gin.Context)
 	GetByID(ctx *gin.Context)
 	Delete(ctx *gin.Context)
+	RedirectError(ctx *gin.Context, statusCode int, err error)
 }
 
 type Control struct {
@@ -78,7 +79,14 @@ func (ctrl *Control) CreateAWSSession() (*session.Session, error) {
 
 // RedirectError redirects to the error page
 func (ctrl *Control) RedirectError(ctx *gin.Context, statusCode int, err error) {
-	ctx.HTML(statusCode, "error.html", gin.H{
-		"Error": err.Error(),
+	// ctx.HTML(statusCode, "error.html", gin.H{
+	// 	"StatusCode": statusCode,
+	// 	"Error":      err.Error(),
+	// })
+
+	ctx.JSON(statusCode, gin.H{
+		"StatusCode": statusCode,
+		"Error":      err.Error(),
 	})
+	ctx.Next()
 }

@@ -31,8 +31,13 @@ $(function () {
             dataType: "json",
             success: function () {
                 Load();
+            },
+            error: function (request, msg, error) {
+                data = request.responseJSON;
+                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
             }
         })
+    
     })
 
     // Delete template file
@@ -45,9 +50,8 @@ $(function () {
                 Load();
             },
             error: function (request, msg, error) {
-                console.log(request);
-                console.log(msg);
-                console.log(error);
+                data = request.responseJSON;
+                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
             }
         });
     })
@@ -68,9 +72,8 @@ $(function () {
                 Load();
             },
             error: function (request, msg, error) {
-                console.log(request);
-                console.log(msg);
-                console.log(error);
+                data = request.responseJSON;
+                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
             }
         });
     })
@@ -82,7 +85,8 @@ $(function () {
         $.get(domain + "/Files/" + id, function (data, status) {
             console.log(data.Preview);
             $(".textarea-preview").append(data.Preview)
-        })
+        });
+        
     })
 })
 

@@ -34,14 +34,6 @@ func (ctrl *FileController) Post(ctx *gin.Context) {
 		return
 	}
 
-	if !ctrl.DB.Where("name = ?", entity.Name).
-		Find(&chkFile).
-		RecordNotFound() {
-		err := fmt.Errorf("%s is existed", entity.Name)
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
 	for i, v := range entity.Templates {
 		var chkTemplate models.Template
 		if ctrl.DB.Where("id = ?", v.ID).Find(&chkTemplate).RecordNotFound() {
@@ -77,9 +69,14 @@ func (ctrl *FileController) Post(ctx *gin.Context) {
 	}
 
 	entity.DeletedAt = nil
-	if err := ctrl.DB.Create(&entity).Error; err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
+
+	if ctrl.DB.Where("name = ?", entity.Name).
+		Find(&chkFile).
+		RecordNotFound() {
+		if err := ctrl.DB.Create(&entity).Error; err != nil {
+			ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+			return
+		}
 	}
 
 	ctx.JSON(http.StatusOK, entity)
@@ -140,7 +137,7 @@ func (ctrl *FileController) Delete(ctx *gin.Context) {
 func (ctrl *FileController) GetByID(ctx *gin.Context) {
 	var (
 		chkEntity models.File
-		routers   []models.Router
+		// routers   []models.Router
 	)
 
 	idStr := ctx.Params.ByName("id")
@@ -158,33 +155,34 @@ func (ctrl *FileController) GetByID(ctx *gin.Context) {
 		return
 	}
 
-	for _, v := range chkEntity.Templates {
-		routerTemplate, err := v.Convert2RouterTemplate()
-		if err != nil {
-			ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-			return
-		}
-		routers = append(routers, routerTemplate.GenerateRouters()...)
-	}
+	// for _, v := range chkEntity.Templates {
+	// 	routerTemplate, err := v.Convert2RouterTemplate()
+	// 	if err != nil {
+	// 		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+	// 		return
+	// 	}
+	// 	routers = append(routers, routerTemplate.GenerateRouters()...)
+	// }
 
-	body, err := json.MarshalIndent(routers, "", "\t")
-	if err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
-	chkEntity.Preview = string(body)
-	// sess, err := ctrl.CreateAWSSession()
+	// body, err := json.MarshalIndent(routers, "", "\t")
 	// if err != nil {
 	// 	ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
 	// 	return
 	// }
 
-	// if err := chkEntity.GetFileContent(sess, configs.Configuration.AWSS3Domain); err != nil {
-	// 	fmt.Println(err)
-	// 	ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-	// 	return
-	// }
+	// chkEntity.Preview = string(body)
+	sess, err := ctrl.CreateAWSSession()
+	if err != nil {
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
+	if err := chkEntity.GetFileContent(sess, configs.Configuration.AWSS3Domain); err != nil {
+		fmt.Println(err)
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
 	ctx.JSON(http.StatusOK, chkEntity)
 	return
 }

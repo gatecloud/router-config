@@ -2,7 +2,7 @@ package models
 
 import (
 	"bytes"
-	"encoding/json"
+	"fmt"
 	"regexp"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	FILE_SIZE int = 2048
+	FILE_SIZE int = 1024
 )
 
 // File
@@ -36,6 +36,7 @@ func (f *File) UploadFile(sess *session.Session, domain string, b []byte) error 
 		Metadata: map[string]*string{
 			"metadata1": aws.String("text/plain"),
 			"metadata2": aws.String("application/json"),
+			"metadata3": aws.String("binary/octet-stream"),
 		},
 	}
 
@@ -44,6 +45,7 @@ func (f *File) UploadFile(sess *session.Session, domain string, b []byte) error 
 	}
 
 	f.URL = domain + name
+	fmt.Println(f.URL)
 	return nil
 }
 
@@ -74,18 +76,23 @@ func (f *File) GetFileContent(sess *session.Session, domain string) error {
 	if err != nil {
 		return err
 	}
-
-	b := make([]byte, FILE_SIZE, FILE_SIZE)
-	_, err = result.Body.Read(b)
-	if err != nil {
+	total := 0
+READ:
+	b := make([]byte, FILE_SIZE)
+	n, err := result.Body.Read(b)
+	if err != nil && n < 0 {
+		fmt.Println(n)
+		fmt.Println(err)
 		return err
 	}
 
-	body, err := json.MarshalIndent(b, "", "\t")
-	if err != nil {
-		return err
+	total += n
+	// b[0:n] removes the bytes that have not been assigned
+	// So the text won't have any unrecognized string
+	f.Preview += string(b[0:n])
+	if total < int(*result.ContentLength) {
+		goto READ
 	}
 
-	f.Preview = string(body)
 	return nil
 }
