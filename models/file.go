@@ -45,6 +45,7 @@ func (f *File) UploadFile(sess *session.Session, domain string, b []byte) error 
 	}
 
 	f.URL = domain + name
+	fmt.Println(f.URL)
 	return nil
 }
 

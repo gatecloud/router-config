@@ -6,6 +6,7 @@ import (
 	"router-config/configs"
 	"router-config/routers"
 	"router-config/validations"
+	"strconv"
 
 	libRoute "github.com/gatecloud/webservice-library/route"
 	"github.com/gin-gonic/gin"
@@ -34,8 +35,6 @@ func main() {
 	r := gin.Default()
 	r.HandleMethodNotAllowed = true
 	r.StaticFS("/public", http.Dir("public"))
-	r.StaticFS("/groups", http.Dir("groups"))
-	r.StaticFS("/files", http.Dir("files"))
 	r.LoadHTMLGlob("templates/*")
 
 	sr := &libRoute.Resource{
@@ -57,12 +56,22 @@ func main() {
 		ctx.HTML(http.StatusOK, "template.html", nil)
 	})
 
-	r.Run(configs.Configuration.Port)
-}
+	r.GET("/error", func(ctx *gin.Context) {
+		var statusCode int
+		errMsg := ctx.Query("Error")
+		code := ctx.Query("StatusCode")
+		if code != "" {
+			statusCode, err = strconv.Atoi(code)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
 
-// RedirectError redirects to the error page
-func RedirectError(ctx *gin.Context, statusCode int, err error) {
-	ctx.HTML(statusCode, "error.html", gin.H{
-		"Error": err.Error(),
+		ctx.HTML(statusCode, "error.html", gin.H{
+			"Error":      errMsg,
+			"StatusCode": statusCode,
+		})
 	})
+
+	r.Run(configs.Configuration.Port)
 }

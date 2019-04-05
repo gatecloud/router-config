@@ -65,6 +65,7 @@ func (ctrl *FileController) Post(ctx *gin.Context) {
 		return
 	}
 
+	fmt.Println("======", string(body))
 	sess, err := ctrl.CreateAWSSession()
 	if err != nil {
 		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
