@@ -76,10 +76,9 @@ func (f *File) GetFileContent(sess *session.Session, domain string) error {
 	if err != nil {
 		return err
 	}
-
-	b := make([]byte, FILE_SIZE)
 	total := 0
 READ:
+	b := make([]byte, FILE_SIZE)
 	n, err := result.Body.Read(b)
 	if err != nil && n < 0 {
 		fmt.Println(n)
@@ -88,8 +87,10 @@ READ:
 	}
 
 	total += n
+	// b[0:n] removes the bytes that have not been assigned
+	// So the text won't have any unrecognized string
+	f.Preview += string(b[0:n])
 	if total < int(*result.ContentLength) {
-		f.Preview += string(b)
 		goto READ
 	}
 
