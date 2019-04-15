@@ -76,7 +76,7 @@ $(function () {
         })
 
         if ($("#chk-method-any").attr("checked") == "checked") {
-            methods = "POST,PATCH,DELETE,GET,OPTIONS,"
+            methods = "POST,PATCH,DELETE,GET,PUT,OPTIONS,"
         }
 
         methods = methods.slice(0, methods.length - 1);
@@ -120,7 +120,7 @@ $(function () {
         })
 
         if ($("#chk-method-any").attr("checked") == "checked") {
-            methods = "POST,PATCH,DELETE,GET,OPTIONS,"
+            methods = "POST,PATCH,DELETE,GET,PUT,OPTIONS,"
         }
 
         methods = methods.slice(0, methods.length - 1);
@@ -212,6 +212,9 @@ function Load() {
                 if (element == "GET") {
                     $("#chk-method-get").attr("checked", "checked");
                 }
+                if (element == "PUT") {
+                    $("#chk-method-put").attr("checked", "checked");
+                }
                 if (element == "OPTIONS") {
                     $("#chk-method-option").attr("checked", "checked");
                 }
@@ -220,6 +223,7 @@ function Load() {
                     $("#chk-method-patch").attr("checked", "checked");
                     $("#chk-method-delete").attr("checked", "checked");
                     $("#chk-method-get").attr("checked", "checked");
+                    $("#chk-method-put").attr("checked", "checked");
                     $("#chk-method-option").attr("checked", "checked");
                 }
             });
