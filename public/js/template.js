@@ -8,6 +8,10 @@ $(function () {
     // Add resource tag
     $("#btn-resource").click(function () {
         resource = $(this).siblings("input").val();
+        if (resource == ""){
+            alert("No blank");
+            return;
+        }
         $label = '<span class="resource-label mr-2 badge badge-success">' + resource + '</span>';
         $("#div-resource").append($label);
     })
@@ -93,6 +97,8 @@ $(function () {
             TemplateName: $("#text-template").val()
 
         }
+
+
         // Post
         $.post(domain + "/Templates", template, function (result) {
             // locaton.reload(true);
@@ -195,7 +201,6 @@ function Load() {
             $.each(resources, function (index, element) {
                 $label = '<span class="resource-label mr-2 badge badge-success">' + element + '</span>';
                 $("#div-resource").append($label);
-
             });
 
             methods = data.Method.split(",")
@@ -226,6 +231,7 @@ function Load() {
                     $("#chk-method-put").attr("checked", "checked");
                     $("#chk-method-option").attr("checked", "checked");
                 }
+                
             });
 
             $("#version").val(data.Version);
@@ -250,3 +256,8 @@ function Load() {
 
 
 }
+
+
+
+
+
