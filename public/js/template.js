@@ -1,19 +1,72 @@
 var domain = "http://localhost:7000/api";
 $(function () {
+    $("#templateForm").validate({
+        rules: {
+            restag: {
+                required:true,
+                minlength:1
+            },
+            version: "required",
+            proxypass: "required",
+            method:{
+                required:true,
+                minlength:1
+            }
+        },
+        message: {
+            restag:{
+                required:"Please add resource",
+                minlength: "You tag must be at least 1"
+            },
+            version: "Please enter a version. e.g. 2.0",
+            proxypass: "Please enter a proxy pass. e.g. wlxapi:7300",
+            method:{
+                required:"Please tick method",
+                minlength: "You method must be at least 1"
+            }
+        }
+
+
+    });
+
+
     // Empty input text
     $("input[text]").focus(function () {
         $(this).val("");
     })
 
+
+
+
     // Add resource tag
+    // $("#btn-resource").on('click', function () {
+    //     $('#templateForm').valid({
+    //         rules: {
+    //             resource: "required",
+    //         },
+    //         message: {
+    //             resource: "Please enter a resource name",
+    //         }
+    //     });
+    // })
     $("#btn-resource").click(function () {
-        resource = $(this).siblings("input").val();
-        if (resource == ""){
-            alert("No blank");
-            return;
-        }
-        $label = '<span class="resource-label mr-2 badge badge-success">' + resource + '</span>';
-        $("#div-resource").append($label);
+        $("#templateForm").validate({
+            rules: {
+                resource: "required"
+            },
+            message: {
+                resource: "Please enter a resource name"
+            }
+    });
+
+    resource = $(this).siblings("input").val();
+    if (resource == "") {
+        console.log("No blank");
+        // alert("No blank");
+        // return;
+    }
+    $label = '<span class="resource-label mr-2 badge badge-success" style="font-size:16px">' + resource + '</span>';
+    $("#div-resource").append($label);
     })
 
 
@@ -68,8 +121,9 @@ $(function () {
         resources = resources.slice(0, resources.length - 1);
         var rsValidation = resources.replace(',', '');
         if (rsValidation == "") {
-            alert("No blank");
-            return;
+            log.console("no blank");
+            // alert("No blank");
+            // return;
         }
 
         var methods = ""
@@ -231,7 +285,7 @@ function Load() {
                     $("#chk-method-put").attr("checked", "checked");
                     $("#chk-method-option").attr("checked", "checked");
                 }
-                
+
             });
 
             $("#version").val(data.Version);

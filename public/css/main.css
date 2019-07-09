@@ -124,3 +124,8 @@ div{
     height: 600px;
     resize: none;
 }
+
+.error{
+    font-style: italic;
+    color: red;
+}
