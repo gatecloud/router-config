@@ -19,16 +19,16 @@
     </style>
 </head>
 
-<body onload="Load()">
+<body>
     <h1 id="banner">Template</h1>
     <div id="main">
         <form class="cmxform" id="templateForm">
             <fieldset>
                 <p>
                     <label for="resource">Resource</label>
-                    <input id="resource" name="resource" type="text" required>
                     <button id="btn-resource" type="button">Add</button>
-                    <div id="div-resource" name="restag">
+                    <input id="resource" name="resource" type="text" required>
+                    <div id="resgroup" name="resgroup">
                     </div>
                 </p>
                 <p>
@@ -89,14 +89,14 @@
 
                     </label>
                 </fieldset>
+                <button id="btn-clear" type="button" class="btn btn-danger">Empty</button>
+                <input id="btn-create-template" type="button" class="btn btn-primary" value="Create Template" />
+                <input id="btn-edit-template" type="button" class="btn btn-primary" value="Edit Template" />
+                <a href="http://localhost:7000/home" class="btn btn-dark">Return to Home</a>
+
+                -------------
                 <table id="tbl-template" class="table table-sm table-responsive table-hover">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Value</th>
-                        </tr>
-                    </thead>
+
                     <tbody>
                         <tr scope="row">
                             <th> 1</th>
@@ -219,10 +219,7 @@
                     <input id="text-template" type="text" name="filename" />
                 </div>
             </div>
-            <button id="btn-clear" type="button" class="btn btn-danger">Empty</button>
-            <input id="btn-create-template" type="button" class="btn btn-primary" value="Create Template" />
-            <input id="btn-edit-template" type="button" class="btn btn-primary" value="Edit Template" />
-            <a href="http://localhost:7000/home" class="btn btn-dark">Return to Home</a>
+
         </form>
     </div>
 </body>

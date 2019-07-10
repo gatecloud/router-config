@@ -1,77 +1,88 @@
 var domain = "http://localhost:7000/api";
+
 $(function () {
+    // $.validator.addMethod("quantity", function (value, element) {
+    //     alert("111");
+    //     console.log($(element).children("span").length);
+    //     // return !this.optional(element) && !this.optional($(element).parent().prev().children("select")[0]);
+    //     return $(element).children("span").length == 0
+    // }, "Please select both the item and its amount.");
+
     $("#templateForm").validate({
         rules: {
-            restag: {
-                required:true,
-                minlength:1
-            },
+            // resgroup:{
+            //     quantity: true
+            // },
             version: "required",
             proxypass: "required",
-            method:{
-                required:true,
-                minlength:1
+            method: {
+                required: true,
+                minlength: 1
             }
         },
         message: {
-            restag:{
-                required:"Please add resource",
-                minlength: "You tag must be at least 1"
-            },
             version: "Please enter a version. e.g. 2.0",
             proxypass: "Please enter a proxy pass. e.g. wlxapi:7300",
-            method:{
-                required:"Please tick method",
+            method: {
+                required: "Please tick method",
                 minlength: "You method must be at least 1"
+            }
+        },
+    });
+
+    function validateTag(action) {
+        if (action == "addTag") {
+            $("#tag-error").remove();
+        } else {
+            if ($("#resgroup").children("label.tag").length == 0) {
+                if ($("#tag-error").length == 0) {
+                    $tagerr = '<label id="tag-error" for="resgroup" class="error">You must add at least one resource</label>';
+                    $("#resgroup").append($tagerr);
+                } else {
+                    $("#tag-error").remove();
+                }
             }
         }
 
+    }
 
-    });
-
-
-    // Empty input text
-    $("input[text]").focus(function () {
-        $(this).val("");
-    })
-
+    // // Empty input text
+    // $("input[text]").focus(function () {
+    //     console.log("222");
+    //     $(this).val("");
+    // })
 
 
+    function addTag(resource) {
+        $label = '<span name="restag" class="tag mr-2 badge badge-success" style="font-size:16px">' + resource + '</span>';
+        $("#resgroup").append($label);
+    }
 
     // Add resource tag
-    // $("#btn-resource").on('click', function () {
-    //     $('#templateForm').valid({
-    //         rules: {
-    //             resource: "required",
-    //         },
-    //         message: {
-    //             resource: "Please enter a resource name",
-    //         }
-    //     });
-    // })
     $("#btn-resource").click(function () {
-        $("#templateForm").validate({
+        $("#resource").valid({
             rules: {
                 resource: "required"
             },
             message: {
                 resource: "Please enter a resource name"
             }
-    });
+        });
 
-    resource = $(this).siblings("input").val();
-    if (resource == "") {
-        console.log("No blank");
-        // alert("No blank");
-        // return;
-    }
-    $label = '<span class="resource-label mr-2 badge badge-success" style="font-size:16px">' + resource + '</span>';
-    $("#div-resource").append($label);
+        validateTag("addTag");
+        resource = $(this).siblings("input").val();
+        if (resource == "") {
+            console.log("No blank");
+            // alert("No blank");
+            // return;
+        }
+        addTag(resource);
     })
 
 
+
     // Delete resource tag
-    $("div").on("click", ".resource-label", function () {
+    $("div").on("click", "[name=restag]", function () {
         $(this).remove();
     })
 
@@ -82,14 +93,14 @@ $(function () {
     })
 
     // Tick checkbox
-    $(".form-check").click(function () {
-        $method = $(this).find("input");
-        if ($method.attr("checked") == "checked") {
-            $method.removeAttr("checked");
-        } else {
-            $method.attr("checked", "checked");
-        }
-    })
+    // $(".form-check").click(function () {
+    //     $method = $(this).find("input");
+    //     if ($method.attr("checked") == "checked") {
+    //         $method.removeAttr("checked");
+    //     } else {
+    //         $method.attr("checked", "checked");
+    //     }
+    // })
 
     $("#project-dropdown").click(function () {
         name = $(this).find(":selected").text()
@@ -108,11 +119,7 @@ $(function () {
 
     // Post template 
     $("#btn-create-template").click(function () {
-        // Validation
-        // if ($(".tm-check").val() == "") {
-        //     alert("No blank");
-        //     return;
-        // }
+        validateTag();
 
         var resources = ""
         $(".resource-label").each(function (index) {
@@ -121,13 +128,13 @@ $(function () {
         resources = resources.slice(0, resources.length - 1);
         var rsValidation = resources.replace(',', '');
         if (rsValidation == "") {
-            log.console("no blank");
+            console.log("no blank");
             // alert("No blank");
             // return;
         }
 
         var methods = ""
-        $("#method-check .form-check").each(function (index) {
+        $("[name='method']").each(function (index) {
             if ($(this).find("input").attr("checked") == "checked") {
                 methods += $(this).find("input").val() + ",";
             }
@@ -149,7 +156,6 @@ $(function () {
             ProjectName: $("#project-dropdown").find(":selected").text(),
             RouterGroup: $("#router-dropdown").find(":selected").text(),
             TemplateName: $("#text-template").val()
-
         }
 
 
@@ -288,11 +294,11 @@ function Load() {
 
             });
 
-            $("#version").val(data.Version);
-            $("#proxy-schema-dropdown option[value=" + data.ProxySchema + "]").prop("selected", true);
-            $("#proxy-pass").val(data.ProxyPass);
-            $("#proxy-version").val(data.ProxyVersion);
-            $("#custom-config-textarea").val(data.CustomConfig);
+            $("#version").val(data.version);
+            $("#proxy-schema-dropdown option[value=" + data.proxyschema + "]").prop("selected", true);
+            $("#proxy-pass").val(data.proxypass);
+            $("#proxy-version").val(data.proxyversion);
+            $("#custom-config-textarea").val(data.customconfig);
             $("#project-dropdown option[value=" + data.ProjectName + "]").prop("selected", true);
             $.get(domain + "/Projects/" + name, function (data, status) {
                 $("#router-dropdown").children("option").remove();
