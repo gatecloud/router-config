@@ -1,5 +1,30 @@
 var domain = "http://localhost:7000/api";
 $(function () {
+    $("#projectForm").validate({
+        rules: {
+            project: "required"
+        },
+        message: {
+            project: "Please enter a project name. e.g. wlxapi"
+        },
+    });
+
+    function validateTag(action) {
+        if (action == "addTag") {
+            $("#tag-error").remove();
+        } else {
+            if ($("#routergroup").children("span.tag").length == 0) {
+                if ($("#tag-error").length == 0) {
+                    $tagerr = '<label id="tag-error" for="routergroup" class="error">You must add at least one router</label>';
+                    $("#routergroup").append($tagerr);
+                } else {
+                    $("#tag-error").remove();
+                }
+            }
+        }
+    }
+
+
     // Empty input text
     $(".form-control").focus(function () {
         $(this).val("");
@@ -7,14 +32,24 @@ $(function () {
 
     // Add router tag
     $("#btn-router-group").click(function () {
-        router = $("#input-router").val();
-        $label = '<span class="router-label mr-2 badge badge-success">' + router + '</span>';
-        $("#div-router-group").append($label);
+        $("#group").valid({
+            rules: {
+                group: "required"
+            },
+            message: {
+                group: "Please enter a group. e.g. api"
+            }
+        });
+
+        validateTag("addTag");
+        router = $(this).siblings("input").val();
+        $label = '<span name="routertag" class="tag mr-2 badge badge-success" style="font-size:16px">' + router + '</span>';
+        $("#routergroup").append($label);
     })
 
 
     // Delete router tag
-    $("div").on("click", ".router-label", function () {
+    $("div").on("click", "[name=routertag]", function () {
         $(this).remove();
     })
 
@@ -25,34 +60,36 @@ $(function () {
     })
 
     // Checkbox event
-    $("td").on("click", "input:checkbox", function () {
+    $("tbody").on("click", ":checkbox", function () {
         if ($(this).is(":checked")) {
             id = $(this).next().attr("value");
             console.log(id);
             $.get(domain + "/Projects/" + id, function (data, status) {
-                $("#input-project").val(data.Name);
+                $("#project").val(data.Name);
                 tags = data.RouterGroups.split(",");
                 $.each(tags, function (index, element) {
-                    $label = '<span class="router-label mr-2 badge badge-success">' + element + '</span>';
-                    $("#div-router-group").append($label);
+                    $label = '<span class="tag mr-2 badge badge-success" style="font-size:16px">' + element + '</span>';
+                    $("#routergroup").append($label);
                 })
             });
-
         } else {
-            $("#input-project").val("");
-            $("tr").remove();
+            $("#project").val("");
+            $(".tag").remove();
         }
     })
 
 
     // Post project 
     $("#btn-create-project").click(function () {
+        $("#projectForm").valid();
+        validateTag("");
+
         var tags = "";
-        $(".router-label").each(function (index) {
+        $(".tag").each(function (index) {
             tags += $(this).html() + ",";
         })
         var project = {
-            Name: $("#input-project").val(),
+            Name: $("#project").val(),
             RouterGroups: tags.slice(0, tags.length - 1)
         }
         $.post(domain + "/Projects", project, function (result) {
@@ -63,14 +100,14 @@ $(function () {
     // Edit project 
     $("#btn-edit-project").click(function () {
         var tags = "";
-        $(".router-label").each(function (index) {
+        $(".tag").each(function (index) {
             tags += $(this).html() + ",";
         })
 
-        id = $("input:checkbox:checked").next().attr("value");
+        id = $("input:checkbox").next().attr("value");
         var project = {
             ID: id,
-            Name: $("#input-project").val(),
+            Name: $("#project").val(),
             RouterGroups: tags.slice(0, tags.length - 1)
         }
         // Patch
@@ -85,7 +122,7 @@ $(function () {
             },
             error: function (request, msg, error) {
                 data = request.responseJSON;
-                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
+                window.location.href = "http://localhost:7000/error?Error=" + data.Error + "&StatusCode=" + data.StatusCode;
             }
         })
     })
@@ -101,7 +138,7 @@ $(function () {
             },
             error: function (request, msg, error) {
                 data = request.responseJSON;
-                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
+                window.location.href = "http://localhost:7000/error?Error=" + data.Error + "&StatusCode=" + data.StatusCode;
             }
         });
     })

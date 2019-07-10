@@ -34,7 +34,7 @@ $(function () {
         if (action == "addTag") {
             $("#tag-error").remove();
         } else {
-            if ($("#resgroup").children("label.tag").length == 0) {
+            if ($("#resgroup").children("span.tag").length == 0) {
                 if ($("#tag-error").length == 0) {
                     $tagerr = '<label id="tag-error" for="resgroup" class="error">You must add at least one resource</label>';
                     $("#resgroup").append($tagerr);
@@ -52,6 +52,18 @@ $(function () {
     //     $(this).val("");
     // })
 
+    // toggle checkbox
+    $("#chk-method-any").on("change", function () {
+        if ($(this).prop("checked")) {
+            $('input[type="checkbox"]').each(function (index) {
+                $(this).prop("checked", true);
+            })
+        } else {
+            $('input[type="checkbox"]').each(function (index) {
+                $(this).prop("checked", false);
+            })
+        }
+    })
 
     function addTag(resource) {
         $label = '<span name="restag" class="tag mr-2 badge badge-success" style="font-size:16px">' + resource + '</span>';
@@ -71,11 +83,7 @@ $(function () {
 
         validateTag("addTag");
         resource = $(this).siblings("input").val();
-        if (resource == "") {
-            console.log("No blank");
-            // alert("No blank");
-            // return;
-        }
+        
         addTag(resource);
     })
 
@@ -123,16 +131,10 @@ $(function () {
         validateTag("");
 
         var resources = ""
-        $(".resource-label").each(function (index) {
+        $(".tag").each(function (index) {
             resources += $(this).html() + ",";
         })
         resources = resources.slice(0, resources.length - 1);
-        var rsValidation = resources.replace(',', '');
-        if (rsValidation == "") {
-            console.log("no blank");
-            // alert("No blank");
-            // return;
-        }
 
         var methods = ""
         $("[name='method']").each(function (index) {

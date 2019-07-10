@@ -89,6 +89,25 @@
 
                     </label>
                 </fieldset>
+
+                <div>
+                    <div class="input-group">
+                        <div class="input-group-prepend col-sm-2">
+                            <label class="input-group-text" for="project-dropdown">Choose Project</label>
+                        </div>
+                        <select id="project-dropdown" name="project" class="custom-select mr-2 p-10">
+                            <option selected>---</option>
+                        </select>
+                        <select id="router-dropdown" class="custom-select mr-2 p-10">
+                            <option selected>---</option>
+                        </select>
+                        <a href="http://localhost:7000/project" class="w-10 ml-2">New Project?</a>
+                        <div class="input-group-prepend col-sm-2">
+                            <label class="input-group-text">Template Name</label>
+                        </div>
+                        <input id="text-template" type="text" name="filename" />
+                    </div>
+                </div>
                 <button id="btn-clear" type="button" class="btn btn-danger">Empty</button>
                 <input id="btn-create-template" type="button" class="btn btn-primary" value="Create Template" />
                 <input id="btn-edit-template" type="button" class="btn btn-primary" value="Edit Template" />
@@ -201,24 +220,7 @@
                 </table>
             </fieldset>
 
-            <div>
-                <div class="input-group">
-                    <div class="input-group-prepend col-sm-2">
-                        <label class="input-group-text" for="project-dropdown">Choose Project</label>
-                    </div>
-                    <select id="project-dropdown" class="custom-select mr-2 p-10">
-                        <option selected>---</option>
-                    </select>
-                    <select id="router-dropdown" class="custom-select mr-2 p-10">
-                        <option selected>---</option>
-                    </select>
-                    <a href="http://localhost:7000/project" class="w-10 ml-2">New Project?</a>
-                    <div class="input-group-prepend col-sm-2">
-                        <label class="input-group-text">Template Name</label>
-                    </div>
-                    <input id="text-template" type="text" name="filename" />
-                </div>
-            </div>
+
 
         </form>
     </div>
