@@ -119,7 +119,8 @@ $(function () {
 
     // Post template 
     $("#btn-create-template").click(function () {
-        validateTag();
+        $("#templateForm").valid();
+        validateTag("");
 
         var resources = ""
         $(".resource-label").each(function (index) {
