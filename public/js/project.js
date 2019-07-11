@@ -17,11 +17,13 @@ $(function () {
                 if ($("#tag-error").length == 0) {
                     $tagerr = '<label id="tag-error" for="routergroup" class="error">You must add at least one router</label>';
                     $("#routergroup").append($tagerr);
+                    return false;
                 } else {
                     $("#tag-error").remove();
                 }
             }
         }
+        return true;
     }
 
     // Empty input text
@@ -82,7 +84,9 @@ $(function () {
         if ($("#projectForm").valid() == false) {
             return
         }
-        validateTag("");
+        if (validateTag("") == false){
+            return 
+        }
 
         var tags = "";
         $(".tag").each(function (index) {
@@ -102,7 +106,9 @@ $(function () {
         if ($("#projectForm").valid() == false) {
             return
         }
-        validateTag("");
+        if (validateTag("") == false){
+            return 
+        }
 
         var tags = "";
         $(".tag").each(function (index) {
@@ -134,8 +140,9 @@ $(function () {
     })
 
     // Delete Project
-    $("tbody").on("click", ".btn-delete", function () {
+    $("tbody").on("click", ".delete", function () {
         id = $(this).next().attr("value");
+        console.log(id);
         $.ajax({
             url: domain + "/Projects/" + id,
             method: 'DELETE',
@@ -165,7 +172,7 @@ function Load() {
                     <td>`+ element.Name + `</td>
                     <td>`+ element.RouterGroups + `</td>
                     <td>
-                        <button type="button">Delete</button>
+                        <button type="button" class="delete">Delete</button>
                         <hidden value=`+ element.ID + `></hidden>
                     </td>
                 </tr>`

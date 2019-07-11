@@ -30,12 +30,13 @@ $(function () {
                 if ($("#tag-error").length == 0) {
                     $tagerr = '<label id="tag-error" for="resgroup" class="error">You must add at least one resource</label>';
                     $("#resgroup").append($tagerr);
+                    return false;
                 } else {
                     $("#tag-error").remove();
                 }
             }
         }
-
+        return true;
     }
 
     // // Empty input text
@@ -122,7 +123,9 @@ $(function () {
         if ($("#templateForm").valid() == false) {
             return
         }
-        validateTag("");
+        if (validateTag("") == false) {
+            return
+        }
 
         var resources = ""
         $(".tag").each(function (index) {
@@ -161,6 +164,7 @@ $(function () {
         // Post
         $.post(domain + "/Templates", template, function (result) {
             // locaton.reload(true);
+            window.location.href = "http://localhost:7000/home";
         })
     })
 
@@ -169,7 +173,9 @@ $(function () {
         if ($("#templateForm").valid() == false) {
             return
         }
-        validateTag("");
+        if (validateTag("") == false) {
+            return
+        }
 
         var resources = ""
         $(".tag").each(function (index) {
@@ -216,7 +222,8 @@ $(function () {
             dataType: "json",
             success: function (result) {
                 $("#resgroup").children().remove();
-                Load();
+                // Load();
+                window.location.href = "http://localhost:7000/home";
             },
             error: function (request, msg, error) {
                 data = request.responseJSON;
