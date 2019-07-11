@@ -4,31 +4,128 @@
 <head>
     <meta charset="UTF-8">
     <link href="/public/css/bootstrap.css" rel="stylesheet" />
-    <link href="/public/css/main.css" rel="stylesheet" />
+    <link href="/public/css/screen.css" rel="stylesheet" />
     <script type="text/javascript" src="/public/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="/public/js/bootstrap.bundle.js"></script>
     <script type="text/javascript" src="/public/js/bootstrap.js"></script>
     <script type="text/javascript" src="/public/js/home.js"></script>
     <title>Router Config</title>
+    <style>
+        table.blueTable {
+            border: 1px solid #1C6EA4;
+            background-color: #EEEEEE;
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        table.blueTable td,
+        table.blueTable th {
+            border: 1px solid #AAAAAA;
+            padding: 3px 2px;
+        }
+
+        table.blueTable tbody td {
+            font-size: 13px;
+        }
+
+        table.blueTable tr:nth-child(even) {
+            background: #D0E4F5;
+        }
+
+        table.blueTable thead {
+            background: #1C6EA4;
+            background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+            background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+            background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+            border-bottom: 2px solid #444444;
+        }
+
+        table.blueTable thead th {
+            font-size: 15px;
+            font-weight: bold;
+            color: #FFFFFF;
+            border-left: 2px solid #D0E4F5;
+        }
+
+        table.blueTable thead th:first-child {
+            border-left: none;
+        }
+
+        table.blueTable tfoot {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FFFFFF;
+            background: #D0E4F5;
+            background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+            background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+            background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+            border-top: 2px solid #444444;
+        }
+
+        table.blueTable tfoot td {
+            font-size: 14px;
+        }
+
+        table.blueTable tfoot .links {
+            text-align: right;
+        }
+
+        table.blueTable tfoot .links a {
+            display: inline-block;
+            background: #1C6EA4;
+            color: #FFFFFF;
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        .card {
+            margin-top: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            border-radius: 5px;
+            /* 5px rounded corners */
+            background-color: khaki;
+            padding: 15px;
+        }
+
+        .textarea-preview {
+            width: 500px;
+            height: 600px;
+            resize: none;
+        }
+
+        #main,
+        #banner {
+            width: 670px;
+            margin-right:10px;
+        }
+
+        #main {
+            display: inline-block;
+        }
+    </style>
 </head>
 
 <body onload="Load()">
-    <div class="container-fluid">
-        <div>
-            <table id="tbl-template" class="table table-dark">
+    <div id="main">
+        <h1 id="banner">Home</h1>
+        <fieldset>
+            <table class="blueTable" id="tbl-template">
                 <thead>
                     <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Project</th>
-                        <th scope="col">Group</th>
-                        <th scope="col">Template</th>
-                        <th scope="col">Operation</th>
+                        <th style="text-align: center"></th>
+                        <th>Project</th>
+                        <th>Group</th>
+                        <th>Template</th>
+                        <th>Operation</th>
                     </tr>
                 </thead>
                 <tbody>
+
                 </tbody>
             </table>
-            <div class="input-group mb-3">
+            <div class="input-group mt-10">
                 <input id="input-file" type="text" class="form-control" placeholder="Route File Name"
                     aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
@@ -36,24 +133,23 @@
                     <a href="http://localhost:7000/template" class="w-100">New Template?</a>
                 </div>
             </div>
-        </div>
-        <div class="card">
-            <h3>Download Files</h3>
-            <table id="tbl-file" class="table table-dark">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Operation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            <h4>Preview:</h4>
-            <textarea class="textarea-preview" disabled>
+        </fieldset>
+    </div>
+    <div id="main" style="float:right;margin-right:500px;">
+        <h1 id="banner">Download Files</h1>
+        <table id="tbl-file" class="blueTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <h4>Preview:</h4>
+        <textarea class="textarea-preview" disabled>
             </textarea>
-        </div>
-
     </div>
 
 </body>
