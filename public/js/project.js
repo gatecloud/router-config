@@ -159,7 +159,7 @@ function Load() {
                     <td>`+ element.Name + `</td>
                     <td>`+ element.RouterGroups + `</td>
                     <td>
-                        <button type="button" class="btn btn-danger btn-delete">Delete</button>
+                        <button type="button">Delete</button>
                         <hidden value=`+ element.ID + `></hidden>
                     </td>
                 </tr>`

@@ -10,15 +10,13 @@ $(function () {
 
     $("#templateForm").validate({
         rules: {
-            // resgroup:{
-            //     quantity: true
-            // },
             version: "required",
             proxypass: "required",
             method: {
                 required: true,
                 minlength: 1
-            }
+            },
+            templateName:"required"
         },
         message: {
             version: "Please enter a version. e.g. 2.0",
@@ -26,7 +24,8 @@ $(function () {
             method: {
                 required: "Please tick method",
                 minlength: "You method must be at least 1"
-            }
+            },
+            templateName: "Please enter template name"
         },
     });
 
@@ -83,7 +82,7 @@ $(function () {
 
         validateTag("addTag");
         resource = $(this).siblings("input").val();
-        
+
         addTag(resource);
     })
 
@@ -138,8 +137,9 @@ $(function () {
 
         var methods = ""
         $("[name='method']").each(function (index) {
-            if ($(this).find("input").attr("checked") == "checked") {
-                methods += $(this).find("input").val() + ",";
+            console.log($(this).prop("checked"));
+            if ($(this).prop("checked") == true) {
+                methods += $(this).val() + ",";
             }
         })
 
@@ -158,9 +158,10 @@ $(function () {
             CustomConfig: $("#custom-config-textarea").html(),
             ProjectName: $("#project-dropdown").find(":selected").text(),
             RouterGroup: $("#router-dropdown").find(":selected").text(),
-            TemplateName: $("#text-template").val()
+            TemplateName: $("#template").val()
         }
 
+        console.log(template);
 
         // Post
         $.post(domain + "/Templates", template, function (result) {
@@ -249,72 +250,85 @@ $(function () {
 function Load() {
     $.get(domain + "/Projects", function (data, status) {
         $.each(data, function (index, element) {
-            $option = '<option value=' + element.Name + '>' + element.Name + '</option>';
+            $option = '<option class="project" value=' + element.Name + '>' + element.Name + '</option>';
+            console.log($option);
             $("#project-dropdown").append($option);
         })
+
+
+        // if ($(".project").length) {
+        //     $.get(domain + "/Projects/" + name, function (data, status) {
+        //         console.log(data.Name);
+        //         $("#router-dropdown").children("option").remove();
+        //         var option = data.RouterGroups.split(",");
+        //         $.each(option, function (index, element) {
+        //             $option = '<option value=' + element + '>' + element + '</option>';
+        //             $("#router-dropdown").append($option);
+        //         })
+        //     }).done(function () {
+        //         $("#router-dropdown option[value=" + data.RouterGroup + "]").prop("selected", true);
+        //     })
+        // }
     })
 
 
     url = $(location).attr("href");
-    params = url.split("?")[1];
-    id = params.split("=")[1];
-    if (id != "") {
-        $.get(domain + "/Templates/" + id, function (data, status) {
-            resources = data.Resource.split(",");
-            $.each(resources, function (index, element) {
-                $label = '<span class="resource-label mr-2 badge badge-success">' + element + '</span>';
-                $("#div-resource").append($label);
-            });
+    if (url.indexOf('?') != -1) {
+        params = url.split("?")[1];
+        id = params.split("=")[1];
+        if (id != "") {
+            $.get(domain + "/Templates/" + id, function (data, status) {
+                resources = data.Resource.split(",");
+                $.each(resources, function (index, element) {
+                    $label = '<span class="tag mr-2 badge badge-success">' + element + '</span>';
+                    $("#div-resource").append($label);
+                });
 
-            methods = data.Method.split(",")
-            $.each(methods, function (index, element) {
-                if (element == "POST") {
-                    $("#chk-method-post").attr("checked", "checked");
-                }
-                if (element == "PATCH") {
-                    $("#chk-method-patch").attr("checked", "checked");
-                }
-                if (element == "DELETE") {
-                    $("#chk-method-delete").attr("checked", "checked");
-                }
-                if (element == "GET") {
-                    $("#chk-method-get").attr("checked", "checked");
-                }
-                if (element == "PUT") {
-                    $("#chk-method-put").attr("checked", "checked");
-                }
-                if (element == "OPTIONS") {
-                    $("#chk-method-option").attr("checked", "checked");
-                }
-                if (element == "ANY") {
-                    $("#chk-method-post").attr("checked", "checked");
-                    $("#chk-method-patch").attr("checked", "checked");
-                    $("#chk-method-delete").attr("checked", "checked");
-                    $("#chk-method-get").attr("checked", "checked");
-                    $("#chk-method-put").attr("checked", "checked");
-                    $("#chk-method-option").attr("checked", "checked");
+                if (data.Method != "") {
+                    methods = data.Method.split(",")
+                    $.each(methods, function (index, element) {
+                        if (element == "POST") {
+                            $("#chk-method-post").attr("checked", "checked");
+                        }
+                        if (element == "PATCH") {
+                            $("#chk-method-patch").attr("checked", "checked");
+                        }
+                        if (element == "DELETE") {
+                            $("#chk-method-delete").attr("checked", "checked");
+                        }
+                        if (element == "GET") {
+                            $("#chk-method-get").attr("checked", "checked");
+                        }
+                        if (element == "PUT") {
+                            $("#chk-method-put").attr("checked", "checked");
+                        }
+                        if (element == "OPTIONS") {
+                            $("#chk-method-option").attr("checked", "checked");
+                        }
+                        if (element == "ANY") {
+                            $("#chk-method-post").attr("checked", "checked");
+                            $("#chk-method-patch").attr("checked", "checked");
+                            $("#chk-method-delete").attr("checked", "checked");
+                            $("#chk-method-get").attr("checked", "checked");
+                            $("#chk-method-put").attr("checked", "checked");
+                            $("#chk-method-option").attr("checked", "checked");
+                        }
+
+                    });
                 }
 
-            });
 
-            $("#version").val(data.version);
-            $("#proxy-schema-dropdown option[value=" + data.proxyschema + "]").prop("selected", true);
-            $("#proxy-pass").val(data.proxypass);
-            $("#proxy-version").val(data.proxyversion);
-            $("#custom-config-textarea").val(data.customconfig);
-            $("#project-dropdown option[value=" + data.ProjectName + "]").prop("selected", true);
-            $.get(domain + "/Projects/" + name, function (data, status) {
-                $("#router-dropdown").children("option").remove();
-                var option = data.RouterGroups.split(",");
-                $.each(option, function (index, element) {
-                    $option = '<option value=' + element + '>' + element + '</option>';
-                    $("#router-dropdown").append($option);
-                })
-            }).done(function () {
-                $("#router-dropdown option[value=" + data.RouterGroup + "]").prop("selected", true);
+                $("#version").val(data.version);
+                $("#proxy-schema-dropdown option[value=" + data.proxyschema + "]").prop("selected", true);
+                $("#proxy-pass").val(data.proxypass);
+                $("#proxy-version").val(data.proxyversion);
+                $("#custom-config-textarea").val(data.customconfig);
+                $("#project-dropdown option[value=" + data.ProjectName + "]").prop("selected", true);
+
+                $("#text-template").val(data.TemplateName);
             })
-            $("#text-template").val(data.TemplateName);
-        })
+        }
+
     }
 
 
