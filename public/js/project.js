@@ -24,7 +24,6 @@ $(function () {
         }
     }
 
-
     // Empty input text
     $(".form-control").focus(function () {
         $(this).val("");
@@ -47,7 +46,6 @@ $(function () {
         $("#routergroup").append($label);
     })
 
-
     // Delete router tag
     $("div").on("click", "[name=routertag]", function () {
         $(this).remove();
@@ -68,7 +66,7 @@ $(function () {
                 $("#project").val(data.Name);
                 tags = data.RouterGroups.split(",");
                 $.each(tags, function (index, element) {
-                    $label = '<span class="tag mr-2 badge badge-success" style="font-size:16px">' + element + '</span>';
+                    $label = '<span name="routertag" class="tag mr-2 badge badge-success" style="font-size:16px">' + element + '</span>';
                     $("#routergroup").append($label);
                 })
             });
@@ -81,7 +79,9 @@ $(function () {
 
     // Post project 
     $("#btn-create-project").click(function () {
-        $("#projectForm").valid();
+        if ($("#projectForm").valid() == false) {
+            return
+        }
         validateTag("");
 
         var tags = "";
@@ -99,20 +99,26 @@ $(function () {
 
     // Edit project 
     $("#btn-edit-project").click(function () {
+        if ($("#projectForm").valid() == false) {
+            return
+        }
+        validateTag("");
+
         var tags = "";
         $(".tag").each(function (index) {
             tags += $(this).html() + ",";
         })
 
-        id = $("input:checkbox").next().attr("value");
+        id = $("input:checkbox:checked").next().attr("value");
         var project = {
             ID: id,
             Name: $("#project").val(),
             RouterGroups: tags.slice(0, tags.length - 1)
         }
+
         // Patch
         $.ajax({
-            url: domain + "/Projects",
+            url: domain + "/Projects/" + id,
             type: 'PATCH',
             data: JSON.stringify(project),
             contentType: "application/json; charset=utf-8",
@@ -124,7 +130,7 @@ $(function () {
                 data = request.responseJSON;
                 window.location.href = "http://localhost:7000/error?Error=" + data.Error + "&StatusCode=" + data.StatusCode;
             }
-        })
+        });
     })
 
     // Delete Project

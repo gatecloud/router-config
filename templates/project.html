@@ -12,17 +12,31 @@
     <script type="text/javascript" src="/public/js/project.js"></script>
     <title>Project</title>
     <style>
-        #templateForm {
+        #projectForm {
             width: 670px;
         }
     </style>
 </head>
 
 <body onload="Load()">
-    <h1 id="banner">Template</h1>
+    <h1 id="banner">Project</h1>
     <div id="main">
         <form class="cmxform" id="projectForm">
             <fieldset>
+                <p>
+                    <table id="tbl-project" style="margin-left:20px">
+                        <thead>
+                            <tr>
+                                <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <th scope="col">Project</th>
+                                <th scope="col">Group</th>
+                                <th scope="col">Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </p>
                 <p>
                     <label for="project">Project</label>
                     <input id="project" name="project" type="text" required>
@@ -30,32 +44,19 @@
                 <p>
                     <label for="group">Group</label>
                     <button id="btn-router-group" type="button">Add</button>
-                    <input id="group" name="group" type="text" required>
-                    <div id="routergroup" name="routergroup">
+                    <input id="group" name="group" type="text">
+                    <div id="routergroup" name="routergroup" required>
                     </div>
                 </p>
+                <p>
+                    <button id="btn-clear" type="button">Empty</button>
+                    <button id="btn-create-project" type="button">Create</button>
+                    <button id="btn-edit-project" type="button">Update</button>
+                    <a href="http://localhost:7000/template" class="btn btn-dark">Return to Template</a>
+                </p>
+
             </fieldset>
-            <div class="form-group row text-right">
-                <a href="http://localhost:7000/template" class="btn btn-dark">Return to Template</a>
-                <button id="btn-clear" type="button">Empty</button>
-                <button id="btn-create-project" type="button">Create</button>
-                <button id="btn-edit-project" type="button">Update</button>
-            </div>
         </form>
-        <div class="container-fluid">
-            <table id="tbl-project">
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Project</th>
-                        <th scope="col">Group</th>
-                        <th scope="col">Operation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
     </div>
 </body>
 

@@ -1,13 +1,6 @@
 var domain = "http://localhost:7000/api";
 
 $(function () {
-    // $.validator.addMethod("quantity", function (value, element) {
-    //     alert("111");
-    //     console.log($(element).children("span").length);
-    //     // return !this.optional(element) && !this.optional($(element).parent().prev().children("select")[0]);
-    //     return $(element).children("span").length == 0
-    // }, "Please select both the item and its amount.");
-
     $("#templateForm").validate({
         rules: {
             version: "required",
@@ -16,7 +9,7 @@ $(function () {
                 required: true,
                 minlength: 1
             },
-            templateName:"required"
+            templateName: "required"
         },
         message: {
             version: "Please enter a version. e.g. 2.0",
@@ -126,7 +119,9 @@ $(function () {
 
     // Post template 
     $("#btn-create-template").click(function () {
-        $("#templateForm").valid();
+        if ($("#templateForm").valid() == false) {
+            return
+        }
         validateTag("");
 
         var resources = ""
@@ -143,7 +138,7 @@ $(function () {
             }
         })
 
-        if ($("#chk-method-any").attr("checked") == "checked") {
+        if ($("#chk-method-any").prop("checked") == true) {
             methods = "POST,PATCH,DELETE,GET,PUT,OPTIONS,"
         }
 
@@ -171,25 +166,25 @@ $(function () {
 
     // Edit the template
     $("#btn-edit-template").click(function () {
+        if ($("#templateForm").valid() == false) {
+            return
+        }
+        validateTag("");
+
         var resources = ""
-        $(".resource-label").each(function (index) {
+        $(".tag").each(function (index) {
             resources += $(this).html() + ",";
         })
         resources = resources.slice(0, resources.length - 1);
-        var rsValidation = resources.replace(',', '');
-        if (rsValidation == "") {
-            alert("No blank");
-            return;
-        }
 
         var methods = ""
-        $("#method-check .form-check").each(function (index) {
-            if ($(this).find("input").attr("checked") == "checked") {
-                methods += $(this).find("input").val() + ",";
+        $("[name='method']").each(function (index) {
+            if ($(this).prop("checked") == true) {
+                methods += $(this).val() + ",";
             }
         })
 
-        if ($("#chk-method-any").attr("checked") == "checked") {
+        if ($("#chk-method-any").prop("checked") == true) {
             methods = "POST,PATCH,DELETE,GET,PUT,OPTIONS,"
         }
 
@@ -208,10 +203,10 @@ $(function () {
             CustomConfig: $("#custom-config-textarea").html(),
             ProjectName: $("#project-dropdown").find(":selected").text(),
             RouterGroup: $("#router-dropdown").find(":selected").text(),
-            TemplateName: $("#text-template").val()
-
+            TemplateName: $("#template").val()
         }
 
+        console.log(template);
         // Patch
         $.ajax({
             url: domain + "/Templates/" + id,
@@ -220,7 +215,7 @@ $(function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
-                $("#div-resource").children().remove();
+                $("#resgroup").children().remove();
                 Load();
             },
             error: function (request, msg, error) {
@@ -251,26 +246,9 @@ function Load() {
     $.get(domain + "/Projects", function (data, status) {
         $.each(data, function (index, element) {
             $option = '<option class="project" value=' + element.Name + '>' + element.Name + '</option>';
-            console.log($option);
             $("#project-dropdown").append($option);
         })
-
-
-        // if ($(".project").length) {
-        //     $.get(domain + "/Projects/" + name, function (data, status) {
-        //         console.log(data.Name);
-        //         $("#router-dropdown").children("option").remove();
-        //         var option = data.RouterGroups.split(",");
-        //         $.each(option, function (index, element) {
-        //             $option = '<option value=' + element + '>' + element + '</option>';
-        //             $("#router-dropdown").append($option);
-        //         })
-        //     }).done(function () {
-        //         $("#router-dropdown option[value=" + data.RouterGroup + "]").prop("selected", true);
-        //     })
-        // }
     })
-
 
     url = $(location).attr("href");
     if (url.indexOf('?') != -1) {
@@ -280,8 +258,8 @@ function Load() {
             $.get(domain + "/Templates/" + id, function (data, status) {
                 resources = data.Resource.split(",");
                 $.each(resources, function (index, element) {
-                    $label = '<span class="tag mr-2 badge badge-success">' + element + '</span>';
-                    $("#div-resource").append($label);
+                    $label = '<span name="resgroup" class="tag mr-2 mt-2 badge badge-success" style="font-size:14px;">' + element + '</span>';
+                    $("#resgroup").append($label);
                 });
 
                 if (data.Method != "") {
@@ -313,25 +291,32 @@ function Load() {
                             $("#chk-method-put").attr("checked", "checked");
                             $("#chk-method-option").attr("checked", "checked");
                         }
-
                     });
                 }
 
-
-                $("#version").val(data.version);
-                $("#proxy-schema-dropdown option[value=" + data.proxyschema + "]").prop("selected", true);
-                $("#proxy-pass").val(data.proxypass);
-                $("#proxy-version").val(data.proxyversion);
-                $("#custom-config-textarea").val(data.customconfig);
+                $("#version").val(data.Version);
+                $("#proxy-schema-dropdown option[value=" + data.ProxySchema + "]").prop("selected", true);
+                $("#proxy-pass").val(data.ProxyPass);
+                $("#proxy-version").val(data.ProxyVersion);
+                $("#custom-config-textarea").val(data.CustomConfig);
                 $("#project-dropdown option[value=" + data.ProjectName + "]").prop("selected", true);
-
-                $("#text-template").val(data.TemplateName);
+                $("#template").val(data.TemplateName);
+            }).done(function (data) {
+                if ($(".project").length) {
+                    $.get(domain + "/Projects/" + data.ProjectName, function (data, status) {
+                        $("#router-dropdown").children("option").remove();
+                        var option = data.RouterGroups.split(",");
+                        $.each(option, function (index, element) {
+                            $option = '<option value=' + element + '>' + element + '</option>';
+                            $("#router-dropdown").append($option);
+                        })
+                    }).done(function () {
+                        $("#router-dropdown option[value=" + data.RouterGroup + "]").prop("selected", true);
+                    })
+                }
             })
         }
-
     }
-
-
 }
 
 
