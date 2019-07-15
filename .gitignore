@@ -25,3 +25,5 @@ files/dockerroutev1.3.6.json
 files/aa.json
 .env
 configs/local.ini
+docker-compose.yml
+roconfig
