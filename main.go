@@ -1,8 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"log"
-	"net/http"
 	"router-config/configs"
 	"router-config/routers"
 	"router-config/validations"
@@ -34,8 +34,10 @@ func main() {
 	}
 	r := gin.Default()
 	r.HandleMethodNotAllowed = true
-	r.StaticFS("/public", http.Dir("public"))
-	r.LoadHTMLGlob("templates/*")
+	// r.StaticFS("/public", http.Dir("public"))
+	// r.LoadHTMLGlob("templates/*")
+
+	fmt.Println("v4")
 
 	sr := &libRoute.Resource{
 		DB:          db,
@@ -44,17 +46,18 @@ func main() {
 	}
 	apiRouter := r.Group("/api")
 	libRoute.DistributeRouters(apiRouter, routers.RouteMap["api"], sr)
-	r.GET("/home", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "home.html", nil)
-	})
 
-	r.GET("/project", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "project.html", nil)
-	})
+	// r.GET("/home", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "home.html", nil)
+	// })
 
-	r.GET("/template", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "template.html", nil)
-	})
+	// r.GET("/project", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "project.html", nil)
+	// })
+
+	// r.GET("/template", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "template.html", nil)
+	// })
 
 	r.GET("/error", func(ctx *gin.Context) {
 		var statusCode int
