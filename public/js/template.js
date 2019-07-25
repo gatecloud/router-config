@@ -81,7 +81,7 @@ $(function () {
 
 
     // Delete resource tag
-    $("div").on("click", "[name=restag]", function () {
+    $("div").on("click", "[name=resgroup]", function () {
         $(this).remove();
     })
 

@@ -13,15 +13,24 @@ Make sure that you have Chrome in your computer before running the `router-confi
 ## How to deploy into a cloud docker manually
 
 
-1. Copy project folder from local to virtual machine where there is a golang environment  
-2. Execute `CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o roconfig`, the executable file `roconfig` will be generated  
-3. Copy `roconfig` to the specific path of the target cloud server, like `~/roconfig`, along with other folder and files, including `/public`, `/templates`, `.env`, `docker-compose.yml` and `Dockerfile`
-4. Execute `sudo docker build -t image-roconfig:latest` to build roconfig's docker image. (The cloud server should install docker)   
-5. Run `sudo docker-compose up -d` to start docker  
+
+1. Compile the program in the local virtual machine within golang environment.  
+You can use the command `CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o <name> .` to specify the executable file's name  
+2. Create a project folder in the target EC2.For example `/ubuntu/roconfig`  
+3. Copy the executable file (e.g. `roconfig`), docker-compose file, Dockerfile and other javascript or css files into the folder which is created in the step 2
+4. Modify the permission of the folder and the file. The commands are 
+```
+sudo chown -R ubuntu:ubuntu roconfig
+sudo chmod 400 roconfig
+```
+5. Build docker image by the command `docker build -t image-roconfig:latest .`  
+6. Run the docker image. `sudo docker-compose up -d`
 
 
 
-## Other configuration
+## Other configuration  
+
+In order to run the program smoothly after deployment, we need to update the URL in `/public/xx.js` files  
 
 ### PostgreSQL configuration  
 
