@@ -34,7 +34,6 @@ func (ctrl *LoginController) GetAll(ctx *gin.Context) {
 		aud = "https://" + domain + "/userinfo"
 	}
 
-	fmt.Println("1")
 	// Generate random state
 	b := make([]byte, 32)
 	rand.Read(b)
@@ -46,7 +45,6 @@ func (ctrl *LoginController) GetAll(ctx *gin.Context) {
 		// ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
 		// return
 	}
-	fmt.Println("2")
 	session.Values["state"] = state
 	err = session.Save(ctx.Request, ctx.Writer)
 	if err != nil {
@@ -54,10 +52,8 @@ func (ctrl *LoginController) GetAll(ctx *gin.Context) {
 		return
 	}
 
-	fmt.Println("3")
 	audience := oauth2.SetAuthURLParam("audience", aud)
 	url := conf.AuthCodeURL(state, audience)
 
-	fmt.Println("====", url)
 	ctx.Redirect(http.StatusTemporaryRedirect, url)
 }

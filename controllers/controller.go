@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"errors"
 	"net/http"
 	"router-config/configs"
 
@@ -101,8 +100,9 @@ func (ctrl *Control) IsAuthenticated(ctx *gin.Context) error {
 	}
 
 	if _, ok := session.Values["profile"]; !ok {
-		// ctx.Redirect(http.StatusSeeOther, "/")
-		return errors.New("no profiles session")
+		ctx.Redirect(http.StatusSeeOther, "/index")
+		ctx.Abort()
+		// return errors.New("no profiles session")
 	} else {
 		ctx.Next()
 	}
