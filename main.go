@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -43,6 +44,7 @@ func main() {
 	fmt.Println("v6")
 
 	store := sessions.NewFilesystemStore("", []byte("roconfig-secret"))
+	gob.Register(map[string]interface{}{})
 	var roResource routers.RoResource
 	roResource.DB = db
 	roResource.Validator = validator
