@@ -21,6 +21,10 @@ func (ctrl *FileController) Post(ctx *gin.Context) {
 		chkFile models.File
 		routers []models.Router
 	)
+	if err := ctrl.IsAuthenticated(ctx); err != nil {
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
 
 	if err := ctx.BindJSON(&entity); err != nil {
 		fmt.Println(err)
@@ -88,6 +92,11 @@ func (ctrl *FileController) Delete(ctx *gin.Context) {
 		chkEntity models.File
 	)
 
+	if err := ctrl.IsAuthenticated(ctx); err != nil {
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
 	idStr := ctx.Params.ByName("id")
 	if idStr == "" {
 		err := errors.New("id is required")
@@ -140,6 +149,11 @@ func (ctrl *FileController) GetByID(ctx *gin.Context) {
 		// routers   []models.Router
 	)
 
+	if err := ctrl.IsAuthenticated(ctx); err != nil {
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
+
 	idStr := ctx.Params.ByName("id")
 	if idStr == "" {
 		err := errors.New("name is required")
@@ -191,6 +205,11 @@ func (ctrl *FileController) GetAll(ctx *gin.Context) {
 	var (
 		entities []models.File
 	)
+
+	if err := ctrl.IsAuthenticated(ctx); err != nil {
+		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
+		return
+	}
 
 	if ctrl.DB.Find(&entities).RecordNotFound() {
 		ctx.JSON(http.StatusNoContent, nil)
