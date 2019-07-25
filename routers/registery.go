@@ -30,5 +30,15 @@ func init() {
 			Controller: reflect.TypeOf(controllers.FileController{}),
 			Model:      &models.File{},
 		},
+		libRoute.Route{
+			Name:       "Login",
+			Controller: reflect.TypeOf(controllers.LoginController{}),
+			Model:      &models.User{},
+		},
+		libRoute.Route{
+			Name:       "Callback",
+			Controller: reflect.TypeOf(controllers.CallbackController{}),
+			Model:      &models.User{},
+		},
 	}
 }

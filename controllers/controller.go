@@ -10,12 +10,12 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis"
+	"github.com/gorilla/sessions"
 	"github.com/jinzhu/gorm"
 )
 
 type Controller interface {
-	Init(*gorm.DB, *validator.Validate)
+	Init(db *gorm.DB, validate *validator.Validate, store *sessions.FilesystemStore, model interface{})
 	Post(ctx *gin.Context)
 	Patch(ctx *gin.Context)
 	GetAll(ctx *gin.Context)
@@ -28,11 +28,13 @@ type Control struct {
 	DB        *gorm.DB
 	Validator *validator.Validate
 	Model     interface{}
+	Store     *sessions.FilesystemStore
 }
 
-func (ctrl *Control) Init(db *gorm.DB, validate *validator.Validate, redis *redis.Client, model interface{}) {
+func (ctrl *Control) Init(db *gorm.DB, validate *validator.Validate, store *sessions.FilesystemStore, model interface{}) {
 	ctrl.DB = db
 	ctrl.Validator = validate
+	ctrl.Store = store
 	ctrl.Model = model
 }
 
@@ -89,4 +91,18 @@ func (ctrl *Control) RedirectError(ctx *gin.Context, statusCode int, err error) 
 		"Error":      err.Error(),
 	})
 	ctx.Next()
+}
+
+func (ctrl *Control) IsAuthenticated(ctx *gin.Context) error {
+	session, err := ctrl.Store.Get(ctx.Request, "auth-session")
+	if err != nil {
+		return err
+	}
+
+	if _, ok := session.Values["profiles"]; !ok {
+		ctx.Redirect(http.StatusSeeOther, "/")
+	} else {
+		ctx.Next()
+	}
+	return nil
 }
