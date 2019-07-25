@@ -3,7 +3,6 @@ var domain = "http://localhost:7000/api";
 $(function () {
     $("#templateForm").validate({
         rules: {
-            version: "required",
             proxypass: "required",
             method: {
                 required: true,
@@ -12,7 +11,6 @@ $(function () {
             templateName: "required"
         },
         message: {
-            version: "Please enter a version. e.g. 2.0",
             proxypass: "Please enter a proxy pass. e.g. wlxapi:7300",
             method: {
                 required: "Please tick method",
@@ -83,7 +81,7 @@ $(function () {
 
 
     // Delete resource tag
-    $("div").on("click", "[name=restag]", function () {
+    $("div").on("click", "[name=resgroup]", function () {
         $(this).remove();
     })
 

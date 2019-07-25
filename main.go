@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"router-config/configs"
@@ -35,7 +36,10 @@ func main() {
 	r := gin.Default()
 	r.HandleMethodNotAllowed = true
 	r.StaticFS("/public", http.Dir("public"))
+	r.StaticFS("/templates", http.Dir("templates"))
 	r.LoadHTMLGlob("templates/*")
+
+	fmt.Println("v5")
 
 	sr := &libRoute.Resource{
 		DB:          db,
@@ -44,6 +48,7 @@ func main() {
 	}
 	apiRouter := r.Group("/api")
 	libRoute.DistributeRouters(apiRouter, routers.RouteMap["api"], sr)
+
 	r.GET("/home", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "home.html", nil)
 	})
