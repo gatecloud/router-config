@@ -26,6 +26,7 @@ type LocalConfig struct {
 	Auth0CallbackURL  string `json:"auth0_callback_url"`
 	Auth0Audience     string `json:"auth0_audience"`
 	RedirectHomePage  string `json:"redirect_home_page"`
+	RedirectIndex     string `json:"redirect_index"`
 }
 
 // Configuration is proxy's global configuration

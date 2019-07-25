@@ -40,5 +40,10 @@ func init() {
 			Controller: reflect.TypeOf(controllers.CallbackController{}),
 			Model:      &models.User{},
 		},
+		libRoute.Route{
+			Name:       "Logout",
+			Controller: reflect.TypeOf(controllers.LogoutController{}),
+			Model:      &models.User{},
+		},
 	}
 }
