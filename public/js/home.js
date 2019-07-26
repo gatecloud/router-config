@@ -114,7 +114,6 @@ function Load() {
             $("#tbl-template tbody").append($tr);
         })
     }).fail(function () {
-        alert("====");
         window.location.href = "http://localhost:7000/index";
     });
 

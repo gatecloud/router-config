@@ -54,6 +54,8 @@ func main() {
 	apiRouter := r.Group("/api")
 	apiRouter.Use(middlewares.IsAuthenticated(store))
 	libRoute.DistributeRouters(apiRouter, routers.RouteMap["api"], &roResource)
+	authRouter := r.Group("/auth")
+	libRoute.DistributeRouters(authRouter, routers.RouteMap["auth"], &roResource)
 
 	r.GET("/index", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "index.html", nil)
