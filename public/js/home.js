@@ -34,10 +34,10 @@ $(function () {
             },
             error: function (request, msg, error) {
                 data = request.responseJSON;
-                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
+                window.location.href = "http://localhost:7000/error?Error=" + data.Error + "&StatusCode=" + data.StatusCode;
             }
         })
-    
+
     })
 
     // Delete template file
@@ -51,7 +51,7 @@ $(function () {
             },
             error: function (request, msg, error) {
                 data = request.responseJSON;
-                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
+                window.location.href = "http://localhost:7000/error?Error=" + data.Error + "&StatusCode=" + data.StatusCode;
             }
         });
     })
@@ -73,7 +73,7 @@ $(function () {
             },
             error: function (request, msg, error) {
                 data = request.responseJSON;
-                window.location.href="http://localhost:7000/error?Error="+data.Error+"&StatusCode="+data.StatusCode;
+                window.location.href = "http://localhost:7000/error?Error=" + data.Error + "&StatusCode=" + data.StatusCode;
             }
         });
     })
@@ -86,7 +86,7 @@ $(function () {
             console.log(data.Preview);
             $(".textarea-preview").append(data.Preview)
         });
-        
+
     })
 })
 
@@ -113,7 +113,12 @@ function Load() {
                 </tr>`
             $("#tbl-template tbody").append($tr);
         })
-    })
+    }).fail(function () {
+        window.location.href = "http://localhost:7000/index";
+    });
+
+
+
     $.get(domain + "/Files", function (data, status) {
         $.each(data, function (index, element) {
             $tr = `<tr>
@@ -128,5 +133,8 @@ function Load() {
                 </tr>`
             $("#tbl-file tbody").append($tr);
         })
+    }).fail(function(){
+        window.location.href = "http://localhost:7000/index";
+
     })
 }

@@ -19,11 +19,6 @@ func (ctrl *TemplateController) Post(ctx *gin.Context) {
 		chkTemplate models.Template
 	)
 
-	if err := ctrl.IsAuthenticated(ctx); err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
 	if err := ctx.Bind(&entity); err != nil {
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
@@ -58,11 +53,6 @@ func (ctrl *TemplateController) Patch(ctx *gin.Context) {
 		entity      models.Template
 		chkTemplate models.Template
 	)
-
-	if err := ctrl.IsAuthenticated(ctx); err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
 
 	if err := ctx.Bind(&entity); err != nil {
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
@@ -110,11 +100,6 @@ func (ctrl *TemplateController) Delete(ctx *gin.Context) {
 		chkEntity models.Template
 	)
 
-	if err := ctrl.IsAuthenticated(ctx); err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
 	idStr := ctx.Params.ByName("id")
 	if idStr == "" {
 		err := errors.New("id is required")
@@ -142,11 +127,6 @@ func (ctrl *TemplateController) GetByID(ctx *gin.Context) {
 		chkEntity models.Template
 	)
 
-	if err := ctrl.IsAuthenticated(ctx); err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
 	idStr := ctx.Params.ByName("id")
 	if idStr == "" {
 		err := errors.New("id is required")
@@ -168,11 +148,6 @@ func (ctrl *TemplateController) GetAll(ctx *gin.Context) {
 	var (
 		entities []models.Template
 	)
-
-	if err := ctrl.IsAuthenticated(ctx); err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
 
 	if ctrl.DB.Order("template_name asc").Find(&entities).RecordNotFound() {
 		ctx.JSON(http.StatusNoContent, nil)

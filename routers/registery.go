@@ -30,6 +30,9 @@ func init() {
 			Controller: reflect.TypeOf(controllers.FileController{}),
 			Model:      &models.File{},
 		},
+	}
+
+	RouteMap["auth"] = []libRoute.Route{
 		libRoute.Route{
 			Name:       "Login",
 			Controller: reflect.TypeOf(controllers.LoginController{}),
