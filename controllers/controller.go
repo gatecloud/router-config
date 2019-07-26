@@ -92,19 +92,3 @@ func (ctrl *Control) RedirectError(ctx *gin.Context, statusCode int, err error) 
 	})
 	ctx.Next()
 }
-
-func (ctrl *Control) IsAuthenticated(ctx *gin.Context) error {
-	session, err := ctrl.Store.Get(ctx.Request, "auth-session")
-	if err != nil {
-		return err
-	}
-
-	if _, ok := session.Values["profile"]; !ok {
-		ctx.Redirect(http.StatusSeeOther, "/index")
-		ctx.Abort()
-		// return errors.New("no profiles session")
-	} else {
-		ctx.Next()
-	}
-	return nil
-}

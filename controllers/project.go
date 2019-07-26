@@ -19,11 +19,6 @@ func (ctrl *ProjectController) Post(ctx *gin.Context) {
 		entity models.Project
 	)
 
-	if err := ctrl.IsAuthenticated(ctx); err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
 	if err := ctx.Bind(&entity); err != nil {
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
 		return
@@ -49,11 +44,6 @@ func (ctrl *ProjectController) Patch(ctx *gin.Context) {
 		entity     models.Project
 		chkProject models.Project
 	)
-
-	if err := ctrl.IsAuthenticated(ctx); err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
 
 	if err := ctx.Bind(&entity); err != nil {
 		ctrl.RedirectError(ctx, http.StatusBadRequest, err)
@@ -89,11 +79,6 @@ func (ctrl *ProjectController) Delete(ctx *gin.Context) {
 		chkEntity models.Project
 	)
 
-	if err := ctrl.IsAuthenticated(ctx); err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
 	idStr := ctx.Params.ByName("id")
 	if idStr == "" {
 		err := errors.New("id is required")
@@ -120,12 +105,6 @@ func (ctrl *ProjectController) GetByID(ctx *gin.Context) {
 	var (
 		chkEntity models.Project
 	)
-
-	if err := ctrl.IsAuthenticated(ctx); err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
-
 	idStr := ctx.Params.ByName("id")
 	if idStr == "" {
 		err := errors.New("id is required")
@@ -158,11 +137,6 @@ func (ctrl *ProjectController) GetAll(ctx *gin.Context) {
 	var (
 		entities []models.Project
 	)
-
-	if err := ctrl.IsAuthenticated(ctx); err != nil {
-		ctrl.RedirectError(ctx, http.StatusInternalServerError, err)
-		return
-	}
 
 	if err := ctrl.DB.Find(&entities).Error; err != nil {
 		// if ctrl.DB.Find(&entities).RecordNotFound() {
