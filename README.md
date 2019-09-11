@@ -28,9 +28,9 @@ sudo chmod 400 roconfig
 
 
 
-## Other configuration  
+## Other configuration (VERY IMPORTANT) 
 
-In order to run the program smoothly after deployment, we need to update the URL in `/public/xx.js` files  
+In order to run the program smoothly after deployment, we need to update the redirect ENDPOINT and API DOMAIN in `/public/xx.js` and `/templates/xx.html` files  
 
 ### PostgreSQL configuration  
 
